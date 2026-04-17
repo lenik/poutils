@@ -1,0 +1,7 @@
+poutils (1.0.0) testing; urgency=medium
+
+  * Initial release
+  * Add poedit-based i18n batch update workflow for all LINGUAS.
+  * Apply translated poedit UI messages across all maintained locale .po files.
+
+ -- Lenik (谢继雷) <lenik@bodz.net>  Fri, 17 Apr 2026 00:00:00 +0000

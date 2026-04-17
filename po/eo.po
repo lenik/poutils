@@ -1,0 +1,159 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: poedit\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-04-17 16:43+0800\n"
+"Language: eo\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: src/poedit.c:205
+msgid "Purpose:"
+msgstr "Celo:"
+
+#: src/poedit.c:206
+msgid "  Efficiently apply many already-translated l10n messages into PO files."
+msgstr "  Efike apliki multajn jam tradukitajn l10n-mesagxojn en PO-dosierojn."
+
+#: src/poedit.c:207
+msgid "  This tool is mainly designed for AI-assisted coding workflows."
+msgstr "  Cxi tiu ilo estas cxefe desegnita por AI-helpataj programadaj laborfluoj."
+
+#: src/poedit.c:209
+msgid "AI usage requirements:"
+msgstr "Postuloj por AI-uzo:"
+
+#: src/poedit.c:210
+msgid "  1) Translate multiple messages in advance (manually) before running poedit."
+msgstr "  1) Traduku plurajn mesagxojn antauxe (mane) antaux rulado de poedit."
+
+#: src/poedit.c:211
+msgid "  2) Use poedit for batch update to avoid one-by-one tool calls."
+msgstr "  2) Uzu poedit por amasa gxisdatigo por eviti unuopajn ilvokojn."
+
+#: src/poedit.c:212
+msgid "  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
+msgstr "  3) NE uzu poedit por krei anstatauxigilojn aux kopii msgid al msgstr."
+
+#: src/poedit.c:213
+msgid "     Doing so defeats the purpose of this tool."
+msgstr "     Tio nuligas la celon de cxi tiu ilo."
+
+#: src/poedit.c:217
+msgid "Usage: poedit [OPTIONS]"
+msgstr "Uzo: poedit [OPCIOJ]"
+
+#: src/poedit.c:220
+msgid "Options:"
+msgstr "Opcioj:"
+
+#: src/poedit.c:222
+msgid "mapping file or directory (optional: default stdin)"
+msgstr "mapa dosiero aux dosierujo (nedeviga; defauxlte stdin)"
+
+#: src/poedit.c:224
+msgid "language code for single mapping file"
+msgstr "lingvokodo por unuopa mapa dosiero"
+
+#: src/poedit.c:226
+msgid "PO directory (default: po)"
+msgstr "PO-dosierujo (defauxlte: po)"
+
+#: src/poedit.c:228
+msgid "show plan but do not modify files"
+msgstr "montru planon sed ne modifu dosierojn"
+
+#: src/poedit.c:230
+msgid "repeat for more verbose loggings"
+msgstr "ripetu por pli detalaj protokoloj"
+
+#: src/poedit.c:232
+msgid "show less logging messages"
+msgstr "montru malpli da protokolaj mesagxoj"
+
+#: src/poedit.c:234
+msgid "show this help and exit"
+msgstr "montru cxi tiun helpon kaj eliru"
+
+#: src/poedit.c:236
+msgid "show version and exit"
+msgstr "montru version kaj eliru"
+
+#: src/poedit.c:282
+#, c-format
+msgid "error: input not found: %s\n"
+msgstr "eraro: enigo ne trovita: %s\n"
+
+#: src/poedit.c:288
+#, c-format
+msgid "error: failed to read mapping file: %s\n"
+msgstr "eraro: malsukcesis legi mapan dosieron: %s\n"
+
+#: src/poedit.c:301
+#, c-format
+msgid "error: unsupported input type: %s\n"
+msgstr "eraro: nesubtenata enigtipo: %s\n"
+
+#: src/poedit.c:307
+#, c-format
+msgid "error: failed to open input directory: %s\n"
+msgstr "eraro: malsukcesis malfermi enig-dosierujon: %s\n"
+
+#: src/poedit.c:368
+msgid "error: input contains only msgid<TAB>msgstr entries; explicit language is required."
+msgstr "eraro: enigo enhavas nur msgid<TAB>msgstr-erojn; eksplicita lingvo estas bezonata."
+
+#: src/poedit.c:369
+msgid "Please use [lang<TAB>]msgid<TAB>msgstr format."
+msgstr "Bonvolu uzi la formaton [lang<TAB>]msgid<TAB>msgstr."
+
+#: src/poedit.c:378
+#, c-format
+msgid "error: invalid field count in %s:%d\n"
+msgstr "eraro: nevalida kampnombro en %s:%d\n"
+
+#: src/poedit.c:385
+#, c-format
+msgid "error: no language resolved for %s:%d\n"
+msgstr "eraro: neniu lingvo trovita por %s:%d\n"
+
+#: src/poedit.c:416
+#, c-format
+msgid "[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"
+msgstr "[dry-run] %s: %s (gxisdatigitaj=%d, fuzzy_forigitaj=%d)\n"
+
+#: src/poedit.c:416
+msgid "would update"
+msgstr "gxisdatigus"
+
+#: src/poedit.c:416 src/poedit.c:419
+msgid "no changes"
+msgstr "neniuj sxangxoj"
+
+#: src/poedit.c:419
+#, c-format
+msgid "%s: %s (updated=%d, fuzzy_removed=%d)\n"
+msgstr "%s: %s (gxisdatigitaj=%d, fuzzy_forigitaj=%d)\n"
+
+#: src/poedit.c:419
+msgid "updated"
+msgstr "gxisdatigita"
+
+#: src/poedit.c:441
+#, c-format
+msgid "warn: skip missing PO file: %s\n"
+msgstr "averto: preterlasas mankantan PO-dosieron: %s\n"
+
+#: src/poedit.c:453
+#, c-format
+msgid "error: cannot infer language from target file: %s\n"
+msgstr "eraro: ne eblas dedukti lingvon el cel-dosiero: %s\n"
+
+#: src/poedit.c:459
+#, c-format
+msgid "warn: no mapping found for language %s; skip %s\n"
+msgstr "averto: neniu mapo trovita por lingvo %s; preterlasas %s\n"
+
+#: src/poedit.c:499
+msgid "error: no mapping entries loaded"
+msgstr "eraro: neniuj mapaj eroj sxargxitaj"
