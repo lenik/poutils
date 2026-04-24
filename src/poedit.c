@@ -6,8 +6,10 @@
 
 #define _POSIX_C_SOURCE 200809L
 
-#include "poedit.h"
 #include "config.h"
+
+#include "poedit.h"
+#include "poformat.h"
 #include "tsvformat.h"
 
 #include <bas/locale/i18n.h>
@@ -21,9 +23,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
-
-#define _(s) gettext(s)
-#define TEXT_DOMAIN "poutils"
 
 enum { OPT_VERSION = 256 };
 
@@ -204,18 +203,31 @@ static const translation_map_t *find_lang_map(const lang_map_list_t *maps, const
 static void print_design_purpose(FILE *out) {
     fprintln(out, _("Purpose:"));
     fprintln(out, _("  Efficiently apply many already-translated l10n messages into PO files."));
+    fprintln(out, _("  poedit is usually used to supplement translations by providing only newly "
+                    "added entries."));
     fprintln(out, _("  This tool is mainly designed for AI-assisted coding workflows."));
     fputc('\n', out);
     fprintln(out, _("AI usage requirements:"));
-    fprintln(out, _("  1) Translate multiple messages in advance (manually) before running poedit."));
+    fprintln(out,
+             _("  1) Translate multiple messages in advance (manually) before running poedit."));
     fprintln(out, _("  2) Use poedit for batch update to avoid one-by-one tool calls."));
     fprintln(out, _("  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."));
     fprintln(out, _("     Doing so defeats the purpose of this tool."));
+    fprintln(out, _("  4) AI must first identify missing entries in current translations, "));
+    fprintln(out, _("     translate them manually."));
+    fprintln(out, _("     then apply to PO files with this tool in one batch."));
 }
 
 void usage(FILE *out) {
     fprintln(out, _("Usage: poedit [OPTIONS]"));
     print_design_purpose(out);
+    fputc('\n', out);
+    fprintln(out, _("Input format: (lang can be inferred from filename or subdir)"));
+    fprintln(out, _("  lang<TAB>msgid<TAB>msgstr"));
+    fprintln(out, _("-or-"));
+    fprintln(out, _("  msgid<TAB>msgstr"));
+    fputc('\n', out);
+    fprintln(out, _("  lang conflict resolution: [lang<TAB>] > [filename] > [subdir]"));
     fputc('\n', out);
     fprintln(out, _("Options:"));
     fputs("  -i, --input PATH      ", out);
@@ -240,10 +252,14 @@ static int parse_args(int argc, char **argv, options_t *opt) {
     memset(opt, 0, sizeof(*opt));
     opt->po_dir = "po";
     static const struct option long_opts[] = {
-        {"input", required_argument, NULL, 'i'}, {"lang", required_argument, NULL, 'l'},
-        {"po-dir", required_argument, NULL, 'p'}, {"dry-run", no_argument, NULL, 'd'},
-        {"verbose", no_argument, NULL, 'v'},     {"quiet", no_argument, NULL, 'q'},
-        {"help", no_argument, NULL, 'h'},        {"version", no_argument, NULL, OPT_VERSION},
+        {"input", required_argument, NULL, 'i'},
+        {"lang", required_argument, NULL, 'l'},
+        {"po-dir", required_argument, NULL, 'p'},
+        {"dry-run", no_argument, NULL, 'd'},
+        {"verbose", no_argument, NULL, 'v'},
+        {"quiet", no_argument, NULL, 'q'},
+        {"help", no_argument, NULL, 'h'},
+        {"version", no_argument, NULL, OPT_VERSION},
         {NULL, 0, NULL, 0},
     };
     for (;;) {
@@ -252,15 +268,33 @@ static int parse_args(int argc, char **argv, options_t *opt) {
             break;
         }
         switch (c) {
-        case 'i': opt->input_path = optarg; break;
-        case 'l': opt->lang = optarg; break;
-        case 'p': opt->po_dir = optarg; break;
-        case 'd': opt->dry_run = true; break;
-        case 'v': opt->verbose = true; break;
-        case 'q': opt->quiet = true; break;
-        case 'h': usage(stdout); return 1;
-        case OPT_VERSION: printf("poedit %s\n", PROJECT_VERSION); return 1;
-        default: usage(stderr); return -1;
+        case 'i':
+            opt->input_path = optarg;
+            break;
+        case 'l':
+            opt->lang = optarg;
+            break;
+        case 'p':
+            opt->po_dir = optarg;
+            break;
+        case 'd':
+            opt->dry_run = true;
+            break;
+        case 'v':
+            opt->verbose = true;
+            break;
+        case 'q':
+            opt->quiet = true;
+            break;
+        case 'h':
+            usage(stdout);
+            return 1;
+        case OPT_VERSION:
+            printf("poedit %s\n", PROJECT_VERSION);
+            return 1;
+        default:
+            usage(stderr);
+            return -1;
         }
     }
     return 0;
@@ -270,7 +304,8 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
     table->n_columns = 2;
     if (!opt->input_path) {
         table_t *parsed = table_parse(stdin, "<stdin>");
-        if (!parsed) return 1;
+        if (!parsed)
+            return 1;
         parsed->n_columns = table->n_columns;
         table_clear(table);
         *table = *parsed;
@@ -290,7 +325,8 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
         }
         table_t *parsed = table_parse(f, opt->input_path);
         fclose(f);
-        if (!parsed) return 1;
+        if (!parsed)
+            return 1;
         parsed->n_columns = table->n_columns;
         table_clear(table);
         *table = *parsed;
@@ -310,7 +346,8 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
     int rc = 0;
     struct dirent *ent;
     while ((ent = readdir(d)) != NULL) {
-        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0 || ent->d_name[0] == '.') {
+        if (strcmp(ent->d_name, ".") == 0 || strcmp(ent->d_name, "..") == 0 ||
+            ent->d_name[0] == '.') {
             continue;
         }
         char *path = path_join(opt->input_path, ent->d_name);
@@ -332,7 +369,8 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
             } else {
                 parsed->n_columns = table->n_columns;
                 for (size_t i = 0; i < parsed->len; i++) {
-                    if (table_append_row(table, &parsed->rows[i], parsed->rows[i].source_name, parsed->rows[i].line_no) != 0) {
+                    if (table_append_row(table, &parsed->rows[i], parsed->rows[i].source_name,
+                                         parsed->rows[i].line_no) != 0) {
                         rc = 1;
                         break;
                     }
@@ -351,8 +389,7 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
     return rc;
 }
 
-static int build_maps_from_entries(const options_t *opt,
-                                   const table_t *table,
+static int build_maps_from_entries(const options_t *opt, const table_t *table,
                                    lang_map_list_t *maps) {
     input_scan_stats_t stats = {0, 0};
     for (size_t i = 0; i < table->len; i++) {
@@ -365,7 +402,8 @@ static int build_maps_from_entries(const options_t *opt,
         }
     }
     if (stats.total_entries > 0 && stats.entries_with_explicit_lang == 0) {
-        fprintln(stderr, _("error: input contains only msgid<TAB>msgstr entries; explicit language is required."));
+        fprintln(stderr, _("error: input contains only msgid<TAB>msgstr entries; explicit language "
+                           "is required."));
         fprintln(stderr, _("Please use [lang<TAB>]msgid<TAB>msgstr format."));
         fputc('\n', stderr);
         print_design_purpose(stderr);
@@ -375,14 +413,17 @@ static int build_maps_from_entries(const options_t *opt,
         const row_t *row = &table->rows[i];
         size_t cols = row_col_count(row);
         if (cols != 2 && cols != 3) {
-            fprintf(stderr, _("error: invalid field count in %s:%d\n"), row->source_name, row->line_no);
+            fprintf(stderr, _("error: invalid field count in %s:%d\n"), row->source_name,
+                    row->line_no);
             return 1;
         }
         char *fallback = resolve_fallback_lang(opt, row->source_name);
         const char *inline_lang = (cols == 3) ? row_get(row, 0) : NULL;
-        const char *chosen = (inline_lang && inline_lang[0]) ? inline_lang : (opt->lang ? opt->lang : fallback);
+        const char *chosen =
+            (inline_lang && inline_lang[0]) ? inline_lang : (opt->lang ? opt->lang : fallback);
         if (!chosen) {
-            fprintf(stderr, _("error: no language resolved for %s:%d\n"), row->source_name, row->line_no);
+            fprintf(stderr, _("error: no language resolved for %s:%d\n"), row->source_name,
+                    row->line_no);
             free(fallback);
             return 1;
         }
@@ -410,14 +451,15 @@ static int build_maps_from_entries(const options_t *opt,
     return 0;
 }
 
-static int update_one_language(const options_t *opt, const char *lang, const char *po_path, const translation_map_t *map) {
+static int update_one_language(const options_t *opt, const char *lang, const char *po_path,
+                               const translation_map_t *map) {
     po_update_result_t r = update_po_file(po_path, map);
     if (opt->dry_run && !opt->quiet) {
-        printf(_("[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"), lang, r.changed ? _("would update") : _("no changes"),
-               r.updated_entries, r.removed_fuzzy);
+        printf(_("[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"), lang,
+               r.changed ? _("would update") : _("no changes"), r.updated_entries, r.removed_fuzzy);
     } else if (!opt->quiet && (opt->verbose || r.changed)) {
-        printf(_("%s: %s (updated=%d, fuzzy_removed=%d)\n"), lang, r.changed ? _("updated") : _("no changes"),
-               r.updated_entries, r.removed_fuzzy);
+        printf(_("%s: %s (updated=%d, fuzzy_removed=%d)\n"), lang,
+               r.changed ? _("updated") : _("no changes"), r.updated_entries, r.removed_fuzzy);
     }
     return 0;
 }
@@ -445,7 +487,8 @@ static int apply_to_default_targets(const options_t *opt, const lang_map_list_t 
     return rc;
 }
 
-static int apply_to_file_targets(const options_t *opt, const lang_map_list_t *maps, int argc, char **argv) {
+static int apply_to_file_targets(const options_t *opt, const lang_map_list_t *maps, int argc,
+                                 char **argv) {
     int rc = 0;
     for (int i = 0; i < argc; i++) {
         char *lang = resolve_target_file_lang(opt, argv[i]);
@@ -470,7 +513,7 @@ static int apply_to_file_targets(const options_t *opt, const lang_map_list_t *ma
 
 int main(int argc, char **argv) {
     const char *exe = self_exe();
-    init_i18n(exe, LOCALEDIR, TEXT_DOMAIN);
+    init_i18n(LOCALEDIR);
 
     options_t opt;
     int parse_rc = parse_args(argc, argv, &opt);
@@ -503,7 +546,8 @@ int main(int argc, char **argv) {
 
     argc -= optind;
     argv += optind;
-    int rc = (argc > 0) ? apply_to_file_targets(&opt, &maps, argc, argv) : apply_to_default_targets(&opt, &maps);
+    int rc = (argc > 0) ? apply_to_file_targets(&opt, &maps, argc, argv)
+                        : apply_to_default_targets(&opt, &maps);
     lang_map_list_free(&maps);
     return rc;
 }

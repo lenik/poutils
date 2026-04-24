@@ -2,158 +2,194 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poedit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 16:43+0800\n"
+"POT-Creation-Date: 2026-04-24 23:01+0800\n"
 "Language: vi\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/poedit.c:205
+#: src/poedit.c:204
 msgid "Purpose:"
 msgstr "Muc dich:"
 
-#: src/poedit.c:206
+#: src/poedit.c:205
 msgid "  Efficiently apply many already-translated l10n messages into PO files."
 msgstr "  Ap dung hieu qua nhieu thong diep l10n da duoc dich vao tep PO."
 
-#: src/poedit.c:207
+#: src/poedit.c:206
+msgid "  poedit is usually used to supplement translations by providing only newly added entries."
+msgstr "  poedit thường dùng để bổ sung bản dịch bằng cách chỉ cung cấp các mục mới thêm."
+
+#: src/poedit.c:208
 msgid "  This tool is mainly designed for AI-assisted coding workflows."
 msgstr "  Cong cu nay chu yeu duoc thiet ke cho quy trinh lap trinh co AI ho tro."
 
-#: src/poedit.c:209
+#: src/poedit.c:210
 msgid "AI usage requirements:"
 msgstr "Yeu cau su dung AI:"
 
-#: src/poedit.c:210
+#: src/poedit.c:212
 msgid "  1) Translate multiple messages in advance (manually) before running poedit."
 msgstr "  1) Dich truoc (thu cong) nhieu thong diep truoc khi chay poedit."
 
-#: src/poedit.c:211
+#: src/poedit.c:213
 msgid "  2) Use poedit for batch update to avoid one-by-one tool calls."
 msgstr "  2) Dung poedit de cap nhat hang loat, tranh goi cong cu tung muc."
 
-#: src/poedit.c:212
+#: src/poedit.c:214
 msgid "  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
 msgstr "  3) KHONG dung poedit de tao ban dich tam hoac sao chep msgid sang msgstr."
 
-#: src/poedit.c:213
+#: src/poedit.c:215
 msgid "     Doing so defeats the purpose of this tool."
 msgstr "     Lam vay se mat di muc dich cua cong cu nay."
 
+#: src/poedit.c:216
+msgid "  4) AI must first identify missing entries in current translations, "
+msgstr "  4) AI trước hết phải xác định các mục còn thiếu trong bản dịch hiện tại,"
+
 #: src/poedit.c:217
+msgid "     translate them manually."
+msgstr "     dịch thủ công chúng,"
+
+#: src/poedit.c:218
+msgid "     then apply to PO files with this tool in one batch."
+msgstr "     rồi áp dụng vào các tệp PO bằng công cụ này trong một lần."
+
+#: src/poedit.c:222
 msgid "Usage: poedit [OPTIONS]"
 msgstr "Cach dung: poedit [TUY CHON]"
 
-#: src/poedit.c:220
+#: src/poedit.c:225
+msgid "Input format: (lang can be inferred from filename or subdir)"
+msgstr "Định dạng đầu vào: (ngôn ngữ có thể suy ra từ tên tệp hoặc thư mục con)"
+
+#: src/poedit.c:226
+msgid "  lang<TAB>msgid<TAB>msgstr"
+msgstr "  lang<TAB>msgid<TAB>msgstr"
+
+#: src/poedit.c:227
+msgid "-or-"
+msgstr "-hoặc-"
+
+#: src/poedit.c:228
+msgid "  msgid<TAB>msgstr"
+msgstr "  msgid<TAB>msgstr"
+
+#: src/poedit.c:230
+msgid "  lang conflict resolution: [lang<TAB>] > [filename] > [subdir]"
+msgstr "  thứ tự xử lý xung đột ngôn ngữ: [lang<TAB>] > [filename] > [subdir]"
+
+#: src/poedit.c:232
 msgid "Options:"
 msgstr "Tuy chon:"
 
-#: src/poedit.c:222
+#: src/poedit.c:234
 msgid "mapping file or directory (optional: default stdin)"
 msgstr "Tep hoac thu muc anh xa (tuy chon, mac dinh stdin)"
 
-#: src/poedit.c:224
+#: src/poedit.c:236
 msgid "language code for single mapping file"
 msgstr "Ma ngon ngu cho tep anh xa don"
 
-#: src/poedit.c:226
+#: src/poedit.c:238
 msgid "PO directory (default: po)"
 msgstr "Thu muc PO (mac dinh: po)"
 
-#: src/poedit.c:228
+#: src/poedit.c:240
 msgid "show plan but do not modify files"
 msgstr "Hien thi ke hoach, khong sua tep"
 
-#: src/poedit.c:230
+#: src/poedit.c:242
 msgid "repeat for more verbose loggings"
 msgstr "Lap lai de hien thi nhat ky chi tiet hon"
 
-#: src/poedit.c:232
+#: src/poedit.c:244
 msgid "show less logging messages"
 msgstr "Hien thi it thong diep nhat ky hon"
 
-#: src/poedit.c:234
+#: src/poedit.c:246
 msgid "show this help and exit"
 msgstr "Hien thi tro giup va thoat"
 
-#: src/poedit.c:236
+#: src/poedit.c:248
 msgid "show version and exit"
 msgstr "Hien thi phien ban va thoat"
 
-#: src/poedit.c:282
+#: src/poedit.c:317
 #, c-format
 msgid "error: input not found: %s\n"
 msgstr "Loi: khong tim thay dau vao: %s\n"
 
-#: src/poedit.c:288
+#: src/poedit.c:323
 #, c-format
 msgid "error: failed to read mapping file: %s\n"
 msgstr "Loi: doc tep anh xa that bai: %s\n"
 
-#: src/poedit.c:301
+#: src/poedit.c:337
 #, c-format
 msgid "error: unsupported input type: %s\n"
 msgstr "Loi: kieu dau vao khong duoc ho tro: %s\n"
 
-#: src/poedit.c:307
+#: src/poedit.c:343
 #, c-format
 msgid "error: failed to open input directory: %s\n"
 msgstr "Loi: mo thu muc dau vao that bai: %s\n"
 
-#: src/poedit.c:368
+#: src/poedit.c:405
 msgid "error: input contains only msgid<TAB>msgstr entries; explicit language is required."
 msgstr "Loi: dau vao chi co muc msgid<TAB>msgstr; can chi dinh ngon ngu ro rang."
 
-#: src/poedit.c:369
+#: src/poedit.c:407
 msgid "Please use [lang<TAB>]msgid<TAB>msgstr format."
 msgstr "Vui long dung dinh dang [lang<TAB>]msgid<TAB>msgstr."
 
-#: src/poedit.c:378
+#: src/poedit.c:416
 #, c-format
 msgid "error: invalid field count in %s:%d\n"
 msgstr "Loi: so luong truong khong hop le tai %s:%d\n"
 
-#: src/poedit.c:385
+#: src/poedit.c:425
 #, c-format
 msgid "error: no language resolved for %s:%d\n"
 msgstr "Loi: khong xac dinh duoc ngon ngu cho %s:%d\n"
 
-#: src/poedit.c:416
+#: src/poedit.c:458
 #, c-format
 msgid "[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "[dry-run] %s: %s (da cap nhat=%d, da bo fuzzy=%d)\n"
 
-#: src/poedit.c:416
+#: src/poedit.c:459
 msgid "would update"
 msgstr "se cap nhat"
 
-#: src/poedit.c:416 src/poedit.c:419
+#: src/poedit.c:459 src/poedit.c:462
 msgid "no changes"
 msgstr "khong co thay doi"
 
-#: src/poedit.c:419
+#: src/poedit.c:461
 #, c-format
 msgid "%s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "%s: %s (da cap nhat=%d, da bo fuzzy=%d)\n"
 
-#: src/poedit.c:419
+#: src/poedit.c:462
 msgid "updated"
 msgstr "da cap nhat"
 
-#: src/poedit.c:441
+#: src/poedit.c:483
 #, c-format
 msgid "warn: skip missing PO file: %s\n"
 msgstr "Canh bao: bo qua tep PO bi thieu: %s\n"
 
-#: src/poedit.c:453
+#: src/poedit.c:496
 #, c-format
 msgid "error: cannot infer language from target file: %s\n"
 msgstr "Loi: khong the suy ra ngon ngu tu tep dich: %s\n"
 
-#: src/poedit.c:459
+#: src/poedit.c:502
 #, c-format
 msgid "warn: no mapping found for language %s; skip %s\n"
 msgstr "Canh bao: khong tim thay anh xa cho ngon ngu %s; bo qua %s\n"
 
-#: src/poedit.c:499
+#: src/poedit.c:542
 msgid "error: no mapping entries loaded"
 msgstr "Loi: khong tai duoc muc anh xa nao"

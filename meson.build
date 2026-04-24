@@ -22,6 +22,7 @@ c = meson.get_compiler('c')
 cpp = meson.get_compiler('cpp')
 
 prefix = get_option('prefix')
+bindir = prefix / get_option('bindir')
 datadir = prefix / get_option('datadir')
 localedir = prefix / get_option('localedir')
 mandir = prefix / get_option('mandir')
@@ -96,6 +97,7 @@ endif
 nowarn = cpp.get_supported_arguments(['-w', '/w'])
 bas_args = ['-DLOGGER_NAME=poutils', '-DASSETS_NAME=poutils']
 
+c_args = [nowarn, bas_args, '-DTEXT_DOMAIN=poutils']
 c_pch = 'src/c_pch.h'
 cpp_pch = 'src/cpp_pch.h'
 
@@ -117,12 +119,12 @@ executable(
         'src/tsvformat.c',
     ],
     exe_objs,
-    c_args: nowarn + bas_args,
+    c_args: c_args,
     c_pch: c_pch,
     include_directories: exe_inc,
     dependencies: exe_deps,
     install: true,
-    install_dir: get_option('prefix') / 'bin',
+    install_dir: bindir,
 )
 
 unit_sources = [
@@ -142,7 +144,7 @@ foreach unit_src : unit_sources
             'src/poformat.c',
             'src/tsvformat.c',
         ],
-        c_args: nowarn + bas_args,
+        c_args: c_args,
         c_pch: c_pch,
         include_directories: exe_inc,
         dependencies: exe_deps + [check_dep],

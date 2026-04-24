@@ -12,22 +12,15 @@
 
 ## 示例应用：`poedit`
 
-`poedit` 是一个类似 `cat` 的工具：
+`poedit` 从映射输入批量更新 `po/<语言>.po`（TSV/文本行：`[lang<制表符>]msgid<制表符>msgstr` 等，详见 `poedit --help`）。
 
 ```bash
-poedit [OPTION]... [FILE]...
+poedit [选项] [PO 文件...]
 ```
 
-- 如果未提供 `FILE`，则从 `stdin` 读取。
-- 如果某个 `FILE` 为 `-`，则在该位置从 `stdin` 读取。
-- 输出写入 `stdout`。
+常见用法与英文版 `README` 的 “Example app: poedit” 一节一致。`--help` 中说明了面向 AI 的工作流：先人工完成翻译/准备好映射，再用本工具一次写入，勿用其生成占位或简单复制 `msgid` 到 `msgstr`。
 
-支持的选项：
-
-- `-v`, `--verbose`
-- `-q`, `--quiet`
-- `-h`, `--help`
-- `--version`
+维护词条的典型循环：`ninja -C <构建目录> posync` 从源码刷新模板与各语言 `.po`，在目录中补全/修正 `msgstr` 后，用 `poedit --input …` 批量写回（或整文件编辑后再 `posync` 校验）。
 
 ## 构建与测试
 
@@ -56,10 +49,10 @@ Meson 会自动发现 `tests/*_unit.c` 中的单元测试并完成注册。
 
 ## i18n（gettext）
 
-`poedit` 使用 `po/` 下的 gettext 翻译文件（`*.po` 与生成的 `.mo` 文件）。
+`poedit` 使用 `po/` 下的 gettext 翻译，文本域为 **poutils**（与构建中的 `TEXT_DOMAIN` 及 `po/LINGUAS` 一致）。
 
-- 安装后运行时从系统 locale 目录加载翻译。
-- 开发态运行（`/build/poedit`）若存在 `/build/po`，会优先使用项目内翻译资源。
+- **已安装**到前缀下的二进制，从该前缀下的 `localedir` 加载（`meson install` 后生效）。
+- **未安装/开发**运行：若可执行文件同目录下存在 `po` 子目录（例如 `ninja` 之后在 `<构建目录>/po`），Bas-C 的 `init_i18n(LOCALEDIR)` 会优先从该树加载，便于在不动 `/usr` 的情况下验证新生成的 `*.mo`；否则回退为编译时配置的 `localedir`。装到系统后若仍见旧翻译，需更新系统内 `.mo` 或改用带 `<build>/po` 的开发构建。
 
 ### 同步翻译词条
 

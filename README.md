@@ -61,6 +61,10 @@ Notes:
 - When `FILE...` args are omitted, `poedit` updates `po/<lang>.po` under `--po-dir`.
 - When `FILE...` args are provided, `poedit` updates those PO files only, and language for each target is inferred using the same priority chain (except line-level language, which already belongs to input parsing).
 
+### AI- and l10n-friendly workflow
+
+`poedit --help` documents how to work with AIs: translate strings yourself (or produce TSV/inputs outside the app), use `poedit` only to batch them into the right `po/<lang>.po` files, and do not use it to fabricate `msgstr` from `msgid` alone. A typical loop is: run `ninja -C <build> posync` to pull new `msgid`s from source, list still-empty or wrong `msgstr`s in a catalog, add translations, then `poedit --input …` to apply in one go.
+
 ## Build and test
 
 ### Build dependencies
@@ -88,10 +92,10 @@ Unit tests are auto-discovered from `tests/*_unit.c` and registered in Meson.
 
 ## i18n (gettext)
 
-`poedit` uses gettext translations under `po/` (`*.po` + generated `.mo` files).
+`poedit` uses gettext translations under `po/` (`*.po` + generated `.mo` files), domain **poutils** (see `TEXT_DOMAIN` in the build and `po/LINGUAS`).
 
-- Installed runtime loads translations from system locale dir.
-- Dev runtime (`/build/poedit`) prefers project-local translations from `/build/po` if present.
+- **Installed** binaries load from the configured `localedir` (under your Meson `prefix` after `meson install`).
+- **Uninstalled / dev** runs: if a `po` directory exists next to the `poedit` executable (e.g. `<build>/po` after `ninja`), the Bas-C `init_i18n(LOCALEDIR)` path prefers that tree so you see freshly built `*.mo` without overwriting `/usr`. Otherwise it falls back to the same `localedir` the binary was built with. After installing to `/usr`, update system locale files (or use the dev binary + `<build>/po`) to test new strings.
 
 ### Sync translation catalogs
 

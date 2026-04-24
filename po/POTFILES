@@ -1,1 +1,4 @@
+src/tsvformat.c
 src/poedit.c
+src/poformat.c
+obj-x86_64-linux-gnu/meson-private/sanitycheckc.c

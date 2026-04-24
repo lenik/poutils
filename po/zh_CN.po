@@ -2,158 +2,194 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poedit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-17 16:43+0800\n"
+"POT-Creation-Date: 2026-04-24 23:01+0800\n"
 "Language: zh_CN\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/poedit.c:205
+#: src/poedit.c:204
 msgid "Purpose:"
 msgstr "用途："
 
-#: src/poedit.c:206
+#: src/poedit.c:205
 msgid "  Efficiently apply many already-translated l10n messages into PO files."
 msgstr "  高效地将大量已翻译的本地化消息批量应用到 PO 文件中。"
 
-#: src/poedit.c:207
+#: src/poedit.c:206
+msgid "  poedit is usually used to supplement translations by providing only newly added entries."
+msgstr "  poedit 通常用于通过仅提供新增加的条目来补充翻译。"
+
+#: src/poedit.c:208
 msgid "  This tool is mainly designed for AI-assisted coding workflows."
 msgstr "  本工具主要用于 AI 辅助编程工作流。"
 
-#: src/poedit.c:209
+#: src/poedit.c:210
 msgid "AI usage requirements:"
 msgstr "AI 使用要求："
 
-#: src/poedit.c:210
+#: src/poedit.c:212
 msgid "  1) Translate multiple messages in advance (manually) before running poedit."
 msgstr "  1) 运行 poedit 前先手工完成多条消息翻译。"
 
-#: src/poedit.c:211
+#: src/poedit.c:213
 msgid "  2) Use poedit for batch update to avoid one-by-one tool calls."
 msgstr "  2) 使用 poedit 批量更新，避免逐条调用工具。"
 
-#: src/poedit.c:212
+#: src/poedit.c:214
 msgid "  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
 msgstr "  3) 不要用 poedit 生成占位翻译或将 msgid 直接复制到 msgstr。"
 
-#: src/poedit.c:213
+#: src/poedit.c:215
 msgid "     Doing so defeats the purpose of this tool."
 msgstr "     否则会违背本工具设计目的。"
 
+#: src/poedit.c:216
+msgid "  4) AI must first identify missing entries in current translations, "
+msgstr "  4) AI 需要先找出当前翻译中缺失的条目，"
+
 #: src/poedit.c:217
+msgid "     translate them manually."
+msgstr "     手动翻译它们，"
+
+#: src/poedit.c:218
+msgid "     then apply to PO files with this tool in one batch."
+msgstr "     再用本工具一次性应用到 PO 文件。"
+
+#: src/poedit.c:222
 msgid "Usage: poedit [OPTIONS]"
 msgstr "用法：poedit [选项]"
 
-#: src/poedit.c:220
+#: src/poedit.c:225
+msgid "Input format: (lang can be inferred from filename or subdir)"
+msgstr "输入格式：（语言可从文件名或子目录推断）"
+
+#: src/poedit.c:226
+msgid "  lang<TAB>msgid<TAB>msgstr"
+msgstr "  lang<TAB>msgid<TAB>msgstr"
+
+#: src/poedit.c:227
+msgid "-or-"
+msgstr "-或-"
+
+#: src/poedit.c:228
+msgid "  msgid<TAB>msgstr"
+msgstr "  msgid<TAB>msgstr"
+
+#: src/poedit.c:230
+msgid "  lang conflict resolution: [lang<TAB>] > [filename] > [subdir]"
+msgstr "  语言冲突解析顺序：[lang<TAB>] > [filename] > [subdir]"
+
+#: src/poedit.c:232
 msgid "Options:"
 msgstr "选项："
 
-#: src/poedit.c:222
+#: src/poedit.c:234
 msgid "mapping file or directory (optional: default stdin)"
 msgstr "映射文件或目录（可选，默认 stdin）"
 
-#: src/poedit.c:224
+#: src/poedit.c:236
 msgid "language code for single mapping file"
 msgstr "单个映射文件的语言代码"
 
-#: src/poedit.c:226
+#: src/poedit.c:238
 msgid "PO directory (default: po)"
 msgstr "PO 目录（默认：po）"
 
-#: src/poedit.c:228
+#: src/poedit.c:240
 msgid "show plan but do not modify files"
 msgstr "仅显示执行计划，不修改文件"
 
-#: src/poedit.c:230
+#: src/poedit.c:242
 msgid "repeat for more verbose loggings"
 msgstr "重复指定可提高日志详细程度"
 
-#: src/poedit.c:232
+#: src/poedit.c:244
 msgid "show less logging messages"
 msgstr "显示更少日志信息"
 
-#: src/poedit.c:234
+#: src/poedit.c:246
 msgid "show this help and exit"
 msgstr "显示帮助并退出"
 
-#: src/poedit.c:236
+#: src/poedit.c:248
 msgid "show version and exit"
 msgstr "显示版本并退出"
 
-#: src/poedit.c:282
+#: src/poedit.c:317
 #, c-format
 msgid "error: input not found: %s\n"
 msgstr "错误：未找到输入：%s\n"
 
-#: src/poedit.c:288
+#: src/poedit.c:323
 #, c-format
 msgid "error: failed to read mapping file: %s\n"
 msgstr "错误：读取映射文件失败：%s\n"
 
-#: src/poedit.c:301
+#: src/poedit.c:337
 #, c-format
 msgid "error: unsupported input type: %s\n"
 msgstr "错误：不支持的输入类型：%s\n"
 
-#: src/poedit.c:307
+#: src/poedit.c:343
 #, c-format
 msgid "error: failed to open input directory: %s\n"
 msgstr "错误：打开输入目录失败：%s\n"
 
-#: src/poedit.c:368
+#: src/poedit.c:405
 msgid "error: input contains only msgid<TAB>msgstr entries; explicit language is required."
 msgstr "错误：输入仅包含 msgid<TAB>msgstr 条目；必须显式指定语言。"
 
-#: src/poedit.c:369
+#: src/poedit.c:407
 msgid "Please use [lang<TAB>]msgid<TAB>msgstr format."
 msgstr "请使用 [lang<TAB>]msgid<TAB>msgstr 格式。"
 
-#: src/poedit.c:378
+#: src/poedit.c:416
 #, c-format
 msgid "error: invalid field count in %s:%d\n"
 msgstr "错误：%s:%d 的字段数量无效\n"
 
-#: src/poedit.c:385
+#: src/poedit.c:425
 #, c-format
 msgid "error: no language resolved for %s:%d\n"
 msgstr "错误：无法为 %s:%d 解析语言\n"
 
-#: src/poedit.c:416
+#: src/poedit.c:458
 #, c-format
 msgid "[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "[dry-run] %s: %s (已更新=%d, 已移除模糊=%d)\n"
 
-#: src/poedit.c:416
+#: src/poedit.c:459
 msgid "would update"
 msgstr "将会更新"
 
-#: src/poedit.c:416 src/poedit.c:419
+#: src/poedit.c:459 src/poedit.c:462
 msgid "no changes"
 msgstr "无变更"
 
-#: src/poedit.c:419
+#: src/poedit.c:461
 #, c-format
 msgid "%s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "%s: %s (已更新=%d, 已移除模糊=%d)\n"
 
-#: src/poedit.c:419
+#: src/poedit.c:462
 msgid "updated"
 msgstr "已更新"
 
-#: src/poedit.c:441
+#: src/poedit.c:483
 #, c-format
 msgid "warn: skip missing PO file: %s\n"
 msgstr "警告：跳过缺失的 PO 文件：%s\n"
 
-#: src/poedit.c:453
+#: src/poedit.c:496
 #, c-format
 msgid "error: cannot infer language from target file: %s\n"
 msgstr "错误：无法从目标文件推断语言：%s\n"
 
-#: src/poedit.c:459
+#: src/poedit.c:502
 #, c-format
 msgid "warn: no mapping found for language %s; skip %s\n"
 msgstr "警告：未找到语言 %s 的映射；跳过 %s\n"
 
-#: src/poedit.c:499
+#: src/poedit.c:542
 msgid "error: no mapping entries loaded"
 msgstr "错误：未加载任何映射条目"
