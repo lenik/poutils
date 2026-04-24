@@ -116,6 +116,23 @@ ninja -C /build posync
 ninja -C /build
 ```
 
+### Man pages
+
+`poedit(1)` is built from a Meson
+`configure_file` step: the top-level
+`poedit.1.in` and each
+`man/<lang>/poedit.1.in` use `@PROJECT_VERSION@`, `@PROJECT_YEAR@`,
+`@PROJECT_AUTHOR@`, and `@PROJECT_EMAIL@` in the manual header, author line, and copyright text. The build writes `poedit.1` and
+`poedit.1.<lang>` into the build tree, and install renames the latter to
+`poedit(1)` under
+`$PREFIX/share/man/<lang>/man1/`
+(for each LINGUAS such as
+`ja`, `zh_CN`, …). To read one translation without
+changing `LANG`, set
+`MANPATH` to
+`$PREFIX/share/man/<lang>` and run
+`man poedit`.
+
 ### Quick locale testing
 
 Prefer `LANGUAGE=<lang>` for predictable gettext selection in dev shells:

@@ -73,6 +73,21 @@ ninja -C /build posync
 ninja -C /build
 ```
 
+### 手册页
+
+英文与各语言 `poedit(1)` 分别来自
+`poedit.1.in` 与
+`man/<语言>/poedit.1.in`，由 Meson
+`configure_file` 用
+`@PROJECT_VERSION@`、
+`@PROJECT_YEAR@`、
+`@PROJECT_AUTHOR@`、
+`@PROJECT_EMAIL@` 在构建时替换；安装到
+`$PREFIX/share/man/<语言>/man1/poedit.1`。
+要单独看某一语言，把 `MANPATH` 指到
+`$PREFIX/share/man/<语言>` 后执行
+`man poedit`。
+
 ### 快速测试语言
 
 建议优先使用 `LANGUAGE=<lang>`，在开发环境中选择更稳定：

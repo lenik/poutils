@@ -1,0 +1,82 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "คำสั่งผู้ใช้"
+.SH NAME
+poedit \- นําแมป gettext \fBmsgid\fP/\fBmsgstr\fP ไปยัง \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ ตัวเลือก ]
+.RI [ ไฟล์\-\%po ]...
+.SH DESCRIPTION
+.B poedit
+อ่านแถว UTF-8 คั่นด้วยแท็บ รวม
+.BR msgstr
+ลงแคตตาล็อก
+.BR .po
+ตามภาษา ใช้หลังเตรียมคําแปลเอง ไม่ออกแบบมาเพื่อสร้าง
+.BR msgstr
+จาก
+.BR msgid
+เพียงอย่างเดียว หากไม่ใส่
+.I ไฟล์\-\%po
+จะอัปเดต
+.IR "po\-\%dir" / ภาษา " " .po
+ตามปรากฏในขาเข้า (ถ้ามีไฟล์) หากใส่พาไฟล์เฉพาะจะอัปเดตนั้นๆ
+เรื่องลําดับการคาดเดา ภาษา ดู
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+แต่ละบรรทัดที่ไม่ว่างจะแยกด้วยอักขระแท็บ (แท็บแนวนอน, Unicode \fBU+0009\fP หรือ ASCII\ 0x09) ไม่ใช่ช่องว่าง.
+ใช้แท็บคั่นฟิลด์; อนุญาตอีสเคปแบบ C มี 3 คอลัมน์ (lang, \fBmsgid\fP, \fBmsgstr\fP)
+หรือ 2 คอลัมน์ หาภาษาได้ด้วย
+.BR \-l
+, พาธ, ฯลฯ
+ตาม
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIพาไฟล์\fP ", " \-\-input=\fIพาไฟล์
+อ่านไฟล์/โฟลเดอร์ หรือ stdin
+.TP
+.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
+รหัสภาษา
+.TP
+.BR \-p " " \fIไดเรกทอรี\fP ", " \-\-po\-dir=\fIไดเรกทอรี
+ราก \fB.po\fP เริ่ม (ค่าเริ่ม \fBpo\fP)
+.TP
+.BR \-d ", " \-\-dry\-run
+เฉยๆ ดู
+.TP
+.BR \-v ", " \-\-verbose
+มาก
+.TP
+.BR \-q ", " \-\-quiet
+น้อย
+.TP
+.BR \-h ", " \-\-help
+วิธีใช้
+.TP
+.B \-\-version
+เวอร์ชั่น. นอกนั้น: ไฟล์
+.I เป้า
+.SH "EXIT STATUS"
+.TP
+.B 0
+สําเร็จ
+.TP
+.B 1
+ล้ม
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+สําหรับ
+.BI poedit " \-\-help" .
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+แต่งโดย @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+อนุญาตภายใต้ AGPL-3.0 หรือรุ่นใหม่. ซอฟต์แวร์เสรี: แก้ไข
+และแจกต่อตาม GNU Affero General Public License. ไม่รับ
+ประกันตามขอบเขตกฎหมาย. อ่านข้อความเต็มรวมข้อกำหนดเสริม ใน
+แหล่งที่ \fBLICENSE\fP ของแพกเกจต้นฉบับ.

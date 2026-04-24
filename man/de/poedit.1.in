@@ -1,0 +1,89 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "Benutzerbefehle"
+.SH NAME
+poedit \- Mappings in GNU gettext \fB.po\fP-Dateien eintragen
+.SH SYNOPSIS
+.B poedit
+.RI [ Optionen ]
+.RI [ po-Datei ]...
+.SH DESCRIPTION
+.B poedit
+liest UTF-8, tabulatoregetrennte Mapping-Zeilen zu \fBmsgid\fP und \fBmsgstr\fP
+und führt die \fBmsgstr\fP-Werte in \fB.po\fP-Katalogen zusammen, nach Sprache
+geordnet. Übersetzungen vorbereiten, dann in einem Rutsch einspielen; es werden
+keine
+.B msgstr
+allein aus
+.B msgid
+generiert. Standardziele heißen
+.IR "po-dir" / sprache " " .po
+, wenn die Datei existiert. Wenn
+.I po-Datei
+-Argumente angegeben werden, nur diese, Sprache u. a. aus dem Dateinamen.
+Auflösung von Sprachangaben: siehe
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+Jede nichtleere Zeile wird an Tabulatorzeichen getrennt (horizontaler Tab, Unicode \fBU+0009\fP bzw. ASCII\ 0x09), nicht an Leerzeichen.
+Pro Zeile Tab-getrennte Felder, optionale C-Escapes in den Feldern. Entweder
+drei Spalten (Sprachcode, \fBmsgid\fP, \fBmsgstr\fP) oder zwei Spalten, wenn
+die Sprache per
+.BR \-l ","
+Eingabepfad oder Zieldatei bestimmbar ist, wie
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIpfad\fP ", " \-\-input=\fIpfad
+Datei oder Verzeichnis; fehlt
+.BR \-i ","
+Standard-Eingabe.
+.TP
+.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
+Sprachkürzel, wenn kein Sprachfeld in der Zeile.
+.TP
+.BR \-p " " \fIverz\fP ", " \-\-po\-dir=\fIverz
+Basis (Vorgabe: \fBpo\fP).
+.TP
+.BR \-d ", " \-\-dry\-run
+Nur Plan anzeigen, Dateien unverändert lassen.
+.TP
+.BR \-v ", " \-\-verbose
+Mehr Meldungen.
+.TP
+.BR \-q ", " \-\-quiet
+Weniger Meldungen.
+.TP
+.BR \-h ", " \-\-help
+Hilfetext, dann Erfolg.
+.TP
+.B \-\-version
+Version, dann Erfolg.
+Weitere Parameter: Ziel-
+.I po-Datei
+s.
+.SH "EXIT STATUS"
+.TP
+.B 0
+Erfolg.
+.TP
+.B 1
+Fehler.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+wählen u. a. die Sprache von
+.BI poedit " \-\-help" .
+Mapping und \fB.po\fP bleiben unverändert.
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+Geschrieben von @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+Lizenz AGPL-3.0-or-later. Dieses Programm ist freie Software: Sie dürfen es
+verändern und unter der GNU Affero General Public License weiterverbreiten.
+ES WIRD KEINE GARANTIE gegeben, soweit das Gesetz es zulässt. Den
+vollständigen Lizenztext, einschließlich Zusatzbedingungen, die
+KI-Ausbeutung und KI-Hegemonie ablehnen und triviale MIT- sowie naive
+BSD-typische Lizenzen ablehnen, entnehmen Sie der Datei \fBLICENSE\fP in
+der Quellveröffentlichung.

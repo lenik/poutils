@@ -1,0 +1,84 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "Lệnh người dùng"
+.SH NAME
+poedit \- áp bản ánh xạ gettext \fBmsgid\fP/\fBmsgstr\fP vào \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ tùy_chọn ]
+.RI [ tệp_po ]...
+.SH DESCRIPTION
+.B poedit
+đọc bảng ánh xạ UTF-8 (cột cách bằng tab) và hợp nhất
+.BR msgstr
+vào catalog
+.BR .po
+theo từng ngôn ngữ. Cần chuẩn bị bản dịch trước, rồi gộp một lượt; không
+tạo
+.B msgstr
+chỉ từ
+.BR msgid .
+Không có
+.I tệp_po
+thì cập nhật
+.IR thư_mục_po / ngôn_ngữ " " .po
+nếu tồn tại. Có tham số thì chỉ những tệp đó; ưu tiên ngôn theo
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+Mỗi dòng không rỗng được tách theo ký tự tab (tab ngang, Unicode \fBU+0009\fP hoặc ASCII\ 0x09), không phải dấu cách.
+Tab phân tách, escape kiểu C. Ba cột (mã, \fBmsgid\fP, \fBmsgstr\fP) hoặc hai
+cột khi suy ra ngôn từ
+.BR \-l
+, đường dẫn, tên. Chi tiết:
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIđg\fP ", " \-\-input=\fIđg
+Tệp hoặc thư mục; bỏ qua sẽ dùng
+.BR stdin .
+.TP
+.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
+Mã nếu dòng thiếu cột ngôn.
+.TP
+.BR \-p " " \fIthm\fP ", " \-\-po\-dir=\fIthm
+Gốc (mặc định: \fBpo\fP).
+.TP
+.BR \-d ", " \-\-dry\-run
+Chỉ mô phỏng, không ghi.
+.TP
+.BR \-v ", " \-\-verbose
+Log dài hơn.
+.TP
+.BR \-q ", " \-\-quiet
+Log ít hơn.
+.TP
+.BR \-h ", " \-\-help
+Trợ giúp, thoát 0.
+.TP
+.B \-\-version
+Phiên bản, thoát 0. Còn lại: đích
+.I tệp_po
+.
+.SH "EXIT STATUS"
+.TP
+.B 0
+Thành công.
+.TP
+.B 1
+Lỗi.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+: ngôn bản
+.BI poedit " \-\-help" .
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+Tác giả: @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+Giấy phép AGPL-3.0 trở lên. Phần mềm tự do: bạn có thể sửa đổi
+và phân phối lại theo GNU Affero General Public License. Không
+bảo hành trong phạm vi pháp cho phép. Toàn văn, kể cả điều khoản
+về bóc lột AI, xem tệp \fBLICENSE\fP trong bản phân phối
+mã nguồn.

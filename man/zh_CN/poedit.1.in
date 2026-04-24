@@ -1,0 +1,81 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "用户命令"
+.SH NAME
+poedit \- 将 gettext \fBmsgid\fP/\fBmsgstr\fP 批量写入 \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ 选项 ]
+.RI [ po\-\%文件 ]...
+.SH DESCRIPTION
+.B poedit
+读取以 UTF-8 编码、制表符分隔的映射，把各语言的
+.BR msgstr
+合并进 GNU gettext
+.BR .po
+文件。应事先准备好翻译再一次性套入，而不是仅凭
+.BR msgid
+“生成”\fBmsgstr\fP。无
+.I po\-\%文件
+参数时，对输入中出现的每种语言更新
+.IR "po\-\%目录" / 语言 " " .po
+（若该文件存在）。显式给出
+.I po\-\%文件
+时只改这些；语言等解析顺序见
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+每个非空行按制表符（水平 Tab，Unicode \fBU+0009\fP / ASCII\ 0x09）分割，而不是按空格分割。
+每行以制表符分栏，字段中可使用类 C 转义。三列：语言、\fBmsgid\fP、\fBmsgstr\fP；或两列且可通过
+.BR \-l
+、路径、目标名解析语言。详见
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fI路径\fP ", " \-\-input=\fI路径
+一个文件或目录；省略则从标准输入读入。
+.TP
+.BR \-l " " \fI语言\fP ", " \-\-lang=\fI语言
+当行内没有语言列时的语言码。
+.TP
+.BR \-p " " \fI目录\fP ", " \-\-po\-dir=\fI目录
+默认 \fB.po\fP 根（默认: \fBpo\fP）。
+.TP
+.BR \-d ", " \-\-dry\-run
+只显示计划，不写文件。
+.TP
+.BR \-v ", " \-\-verbose
+更详细日志。
+.TP
+.BR \-q ", " \-\-quiet
+更少输出。
+.TP
+.BR \-h ", " \-\-help
+打印用法并以状态 0 退出。
+.TP
+.B \-\-version
+打印版本并以状态 0 退出。其余操作数为要更新的
+.I po\-\%路径
+。
+.SH "EXIT STATUS"
+.TP
+.B 0
+成功。
+.TP
+.B 1
+失败。
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+影响
+.BI poedit " \-\-help"
+等 gettext 界面语言，不改动映射行或 \fB.po\fP 正文字面内容。
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+由 @PROJECT_AUTHOR@ <@PROJECT_EMAIL@> 编写。
+.SH COPYRIGHT
+版权所有 \(co @PROJECT_YEAR@.
+许可: AGPL-3.0 或更新版本. 本程序为自由软件, 你可依据 GNU
+Affero General Public License 修改并再发布; 在适用法律
+范围内不提供保证. 完整许可(含反 AI 剥削等补充条款)见源
+代发布包中的 \fBLICENSE\fP 文件。

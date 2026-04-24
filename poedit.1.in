@@ -1,57 +1,127 @@
 .TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "User Commands"
 .SH NAME
-poedit \- concatenate files to standard output
+poedit \- batch apply gettext \fBmsgid\fP/\fBmsgstr\fP mappings into \fB.po\fP files
 .SH SYNOPSIS
 .B poedit
-.RI [ OPTION ]...
-.RI [ FILE ]...
+.RI [ options ]
+.RI [ po\-file ]...
 .SH DESCRIPTION
-Copy each
-.I FILE
-to standard output in order. If
-.I FILE
-is a single dash
-.RB ( \- ),
-read standard input at that position. If no
-.I FILE
-is given, read standard input once.
-.PP
 .B poedit
-is similar in spirit to
-.BR cat (1):
-it writes the concatenation of inputs to standard output.
+reads UTF\-8, tab\-separated mapping data and merges translated strings
+(\fBmsgstr\fP) for known \fBmsgid\fP values into one or more GNU gettext
+.B .po
+files, grouped by language. Prepare translations first, then use
+.B poedit
+to update catalogs in a single run; it is not a substitute for human or other
+translation of the source strings themselves.
+By default, target files are
+.IR "po\-dir" / "lang" .po
+for each
+.I lang
+in the input when that file is present. If
+.I po\-file
+arguments are given, only those files are written, and
+.I lang
+is usually inferred from the path (for example, \fB.../ja.po\fP for Japanese).
+The built\-in
+.B \-\-help
+text explains a reasonable workflow, including for AI assistance.
+.SH "INPUT FORMAT"
+Each non\-empty line is split on
+.B tab
+(horizontal tab, Unicode
+.B U+0009
+and ASCII\ 0x09), not on space characters. Within each field, C\-\%style
+backslash escapes are allowed, as in C string literals, so that embedded new
+lines, tabs, and quotes can be written without breaking the TSV line layout.
+The following layouts are supported:
+.PP
+.RS
+.IP 1. 3
+\&\fBThree\fP field layout: language code, then
+.BR msgid ","
+then
+.BR msgstr ","
+in that order, with
+.B tab
+characters between the fields. The first field is a Gettext language tag (e.g.
+.BR de ","
+.BR zh_CN ")"
+and the two message fields are the untranslated and translated string.
+.IP 2. 3
+\&\fBTwo\fP field layout:
+.BR msgid
+and
+.BR msgstr
+only, with a
+.B tab
+between them, when a separate language code column is not present. The target
+language is then inferred, in the following order: the
+.BR \-l " " \-\-lang
+value, the
+.BR \-i
+file or directory when
+.B \-i
+is a path, and the
+.I po\-file
+target name, depending on the invocation. That order matches the language\-\%resolution
+rules printed by
+.BR poedit\ \ \-\-help .
+.RE
 .SH OPTIONS
 .TP
+.BR \-i " " \fIpath\fP ", " \-\-input=\fIpath
+Read from a file or a directory. If this option is omitted, read the standard
+input.
+.TP
+.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang\fP
+Set the language for a single input file when a row does not start with a
+language column.
+.TP
+.BR \-p " " \fIdir\fP ", " \-\-po\-dir=\fIdir\fP
+Base directory for default \fBpo\fP paths (default: \fBpo\fP in the
+current design).
+.TP
+.BR \-d ", " \-\-dry\-run
+Show the update plan; do not modify files.
+.TP
 .BR \-v ", " \-\-verbose
-Print each file name (or
-.RB \(lq standard\ input \(rq
-for
-.RB \(lq \- \(rq)
-to standard error before copying that input.
+Increase verbosity.
 .TP
 .BR \-q ", " \-\-quiet
-Suppress messages that would be printed by
-.BR \-\-verbose .
-If both
-.B \-\-verbose
-and
-.B \-\-quiet
-are given,
-.B \-\-quiet
-wins.
+Reduce log output.
 .TP
 .BR \-h ", " \-\-help
-Print a usage summary and exit successfully.
+Print a usage message and exit successfully.
 .TP
 .B \-\-version
-Print version and license information and exit successfully.
-.SH EXIT STATUS
+Print
+.B poedit
+version and exit successfully.
+.PP
+Further operands are
+.I po\-file
+paths to update directly.
+.SH "EXIT STATUS"
 .TP
 .B 0
 Success.
 .TP
 .B 1
-An error occurred (invalid options, unreadable file, or I/O error).
+Error.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+select the language of
+.BI poedit " \-\-help"
+and related diagnostics where gettext catalogs are installed.
+They do not change mapping or
+.B .po
+file contents.
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
 .SH AUTHOR
 Written by @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
 .SH COPYRIGHT

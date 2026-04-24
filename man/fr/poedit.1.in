@@ -1,0 +1,91 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "Commandes utilisateur"
+.SH NAME
+poedit \- appliquer des mappages gettext à des fichiers \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ options ]
+.RI [ fichier-po ]...
+.SH DESCRIPTION
+.B poedit
+lit des lignes mappage UTF-8 (tabulations) contenant
+.BR msgid
+et
+.BR msgstr
+et intègre les
+.BR msgstr
+dans des catalogues
+.BR .po
+GNU par langue. Préparez d'abord les textes, puis lancez un passage unique ; le
+programme ne génère pas de
+.B msgstr
+à partir du seul
+.BR msgid .
+Sans arguments
+.I fichier-po
+, il met à jour
+.IR "po\-dir" / langue " " .po
+si le fichier est présent. Avec des chemins, seuls ceux-là, la langue dérivant
+souvent du nom (ex. \fBja.po\fP). Résolution: voir
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+Chaque ligne non vide est séparée sur des tabulations (tabulation horizontale, Unicode \fBU+0009\fP ou ASCII\ 0x09), et non sur des espaces.
+Champs séparés par des tabulations ; échappements de style C possibles. Trois
+colonnes (langue, \fBmsgid\fP, \fBmsgstr\fP) ou deux, la langue étant
+reconstituée grâce à
+.BR \-l ","
+l'emplacement d'entrée ou de sortie, cf.
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIchemin\fP ", " \-\-input=\fIchemin
+Fichier ou répertoire, sinon
+.BR stdin "."
+.TP
+.BR \-l " " \fIlangue\fP ", " \-\-lang=\fIlangue
+Code quand la ligne n'indique pas de langue.
+.TP
+.BR \-p " " \fIrep\fP ", " \-\-po\-dir=\fIrep
+Répertoire de base (défaut: \fBpo\fP).
+.TP
+.BR \-d ", " \-\-dry\-run
+N'écrit pas les fichiers; affiche seulement le plan.
+.TP
+.BR \-v ", " \-\-verbose
+Messages plus bavards.
+.TP
+.BR \-q ", " \-\-quiet
+Moins bavard.
+.TP
+.BR \-h ", " \-\-help
+Aide, puis sortie 0.
+.TP
+.B \-\-version
+Version, sortie 0. Autres opérandes: chemins
+.I fichier-po
+.
+.SH "EXIT STATUS"
+.TP
+.B 0
+Succès.
+.TP
+.B 1
+Échec.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+: langue d’
+.BI poedit " \-\-help" .
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+Écrit par @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+Licence AGPL-3.0 ou ultérieur. C'est un logiciel libre: vous pouvez
+le modifier et le redistribuer selon les termes de la GNU Affero
+General Public License. AUCUNE GARANTIE, dans la limite de la
+loi. Le texte de licence intégral, dont des clauses
+supplémentaires rejetant l'exploitation par l'IA, est dans
+\fBLICENSE\fP, dans la distribution des sources.

@@ -1,0 +1,83 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "使用者命令"
+.SH NAME
+poedit \- 批次將 gettext \fBmsgid\fP/\fBmsgstr\fP 寫入 \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ 選項 ]
+.RI [ po\-\%檔案 ]...
+.SH DESCRIPTION
+.B poedit
+讀入 UTF-8、以定位字元分欄的映射，把各語言的
+.BR msgstr
+合併進 GNU gettext
+.BR .po
+檔。先備妥譯文再一次套用，而非僅從
+.BR msgid
+產生
+.BR msgstr
+。未附
+.I po\-\%檔案
+時，針對輸入中出現的語言更新
+.IR "po\-\%目錄" / 語系 " " .po
+（若檔案存在）。指定
+.I po\-\%檔案
+則只改這些。語系解析先後請見
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+每個非空行以定位字元（水平 Tab，Unicode \fBU+0009\fP / ASCII\ 0x09）分隔，而不是空白字元。
+以定位字元分欄，欄位內可含類 C 脫字元。三欄：語系、\fBmsgid\fP、\fBmsgstr\fP，或兩欄而可由
+.BR \-l
+、路徑、目標推得語系。詳見
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fI路徑\fP ", " \-\-input=\fI路徑
+單一檔或目錄；省略則讀取標準輸入。
+.TP
+.BR \-l " " \fI語系\fP ", " \-\-lang=\fI語系
+當行內沒有語欄位時的語系代碼。
+.TP
+.BR \-p " " \fI目錄\fP ", " \-\-po\-dir=\fI目錄
+預設 \fB.po\fP 根（預設: \fBpo\fP）。
+.TP
+.BR \-d ", " \-\-dry\-run
+只顯示預定變更，不寫入。
+.TP
+.BR \-v ", " \-\-verbose
+較多記錄。
+.TP
+.BR \-q ", " \-\-quiet
+較少記錄。
+.TP
+.BR \-h ", " \-\-help
+顯示說明，結束代碼 0。
+.TP
+.B \-\-version
+顯示版本，結束代碼 0。其餘參數為要更新的
+.I po\-\%路徑
+。
+.SH "EXIT STATUS"
+.TP
+.B 0
+成功。
+.TP
+.B 1
+失敗。
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+影響
+.BI poedit " \-\-help"
+的介面語言，不改映射或 .po 內文。
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+由 @PROJECT_AUTHOR@ <@PROJECT_EMAIL@> 撰寫。
+.SH COPYRIGHT
+版權所有 \(co @PROJECT_YEAR@.
+授權: AGPL-3.0 或更新版. 本程式為自由軟體, 你可依 GNU
+Affero General Public License 修改與再散布; 於法律
+允許範圍內不提供保證. 完整條文(含反 AI 剝削等
+補充)見源碼套件內的 \fBLICENSE\fP 。

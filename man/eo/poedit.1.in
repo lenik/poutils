@@ -1,0 +1,86 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "Ordono de uzanto"
+.SH NAME
+poedit \- apliki gettekstajn tabelojn al \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ opcioj ]
+.RI [ po-dosiero ]...
+.SH DESCRIPTION
+.B poedit
+legas tab-limitajn, UTF-8-ajn
+.B msgid
+/
+.BR msgstr
+\-\%mapojn kaj kontribuas
+.B msgstr
+en
+.B .po
+\-\%katalogoj. Pregardu tradukojn antaue; unu fojo apliku. Nekreante
+.B msgstr
+nur el
+.BR msgid .
+Celoj: implicitaj
+.IR "po\-dir" / "lingvo" .po
+, se dosiero ekzistas. Kun listo de
+.IR po\-dosieroj
+\-\%nur ilin. Lingvo: el vojo aŭ
+.BR \-l
+\-\%lau
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+Ĉiu nemalplena linio estas dividata per tab-signoj (horizontala tabo, Unicode \fBU+0009\fP aŭ ASCII\ 0x09), ne per spacoj.
+Tab\-\%apartitaj kampoj, C-escapoj eblas. Tri: lingvo, \fBmsgid\fP, \fBmsgstr\fP. Du, kie lingvo resolvigas per
+.BR \-l ","
+lai
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIpad\fP ", " \-\-input=\fIpad
+Fonto; manke
+.BR stdin .
+.TP
+.BR \-l " " \fIlingvo\fP ", " \-\-lang=\fIlingvo
+Kodeto.
+.TP
+.BR \-p " " \fIre\fP ", " \-\-po\-dir=\fIre
+Bazretejo, def. \fBpo\fP.
+.TP
+.BR \-d ", " \-\-dry\-run
+Simuli.
+.TP
+.BR \-v ", " \-\-verbose
+Plia logado.
+.TP
+.BR \-q ", " \-\-quiet
+Malplia.
+.TP
+.BR \-h ", " \-\-help
+Helpo.
+.TP
+.B \-\-version
+Versio. Aliaj: cel\-\%padoj.
+.SH "EXIT STATUS"
+.TP
+.B 0
+Bone.
+.TP
+.B 1
+Erare.
+.SH ENVIRONMENT
+.BI LC_*
+por
+.BI poedit " \-\-help" .
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+Skribis @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+Permesilo AGPL-3.0 aŭ pli malfrua. Tio estas libera programaro: laŭ
+kondiĉoj de la GNU Affero General Public License oni ĝin povas
+modifi kaj pludistribi. SEN GARANTIO, eble permesite de leĝo. Plena
+permesila teksto, inkl. kondiĉojn kontraŭ AI-ekspluatado, troviĝas
+en \fBLICENSE\fP de la fontodistribuo.

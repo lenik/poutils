@@ -1,0 +1,83 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "Comandi utente"
+.SH NAME
+poedit \- applicare mappature gettext a file \fB.po\fP
+.SH SYNOPSIS
+.B poedit
+.RI [ opzioni ]
+.RI [ file-po ]...
+.SH DESCRIPTION
+.B poedit
+legge mappature UTF-8 (campi separati da tab) e unisce
+.BR msgstr
+ai cataloghi
+.BR .po
+per lingua. Preparare le stringhe prima, quindi lanciare un singolo
+aggiornamento; non vengono generate
+.B msgstr
+solo da
+.BR msgid .
+Senza
+.I file-po
+si aggiorna
+.IR "po\-dir" / lingua " " .po
+se esiste. Con argomenti, solo quei file; spesso la lingua deriva dal nome. Priorità:
+.BI poedit " \-\-help" .
+.SH "INPUT FORMAT"
+Ogni riga non vuota viene separata sui caratteri di tabulazione (tab orizzontale, Unicode \fBU+0009\fP o ASCII\ 0x09), non sugli spazi.
+Tab come separatore; possibili escape in stile C. Tre campi: lingua, \fBmsgid\fP, \fBmsgstr\fP, oppure due, se la lingua si ricava con
+.BR \-l ","
+percorso, nome, vedi
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIpath\fP ", " \-\-input=\fIpath
+File o directory, altrimenti
+.BR stdin .
+.TP
+.BR \-l " " \fIlingua\fP ", " \-\-lang=\fIlingua
+Codice se manca la colonna lingua.
+.TP
+.BR \-p " " \fIdir\fP ", " \-\-po\-dir=\fIdir
+Base (def.: \fBpo\fP).
+.TP
+.BR \-d ", " \-\-dry\-run
+Solo simulazione.
+.TP
+.BR \-v ", " \-\-verbose
+Log più verboso.
+.TP
+.BR \-q ", " \-\-quiet
+Meno log.
+.TP
+.BR \-h ", " \-\-help
+Aiuto, uscita 0.
+.TP
+.B \-\-version
+Versione, uscita 0. Altri operandi: i
+.I file-po
+obiettivo.
+.SH "EXIT STATUS"
+.TP
+.B 0
+OK.
+.TP
+.B 1
+Errore.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+: lingua per
+.BI poedit " \-\-help" .
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+Scritto da @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+Licenza AGPL-3.0 o successiva. Questo programma è software libero:
+potete modificarlo e redistribuirlo alle condizioni della GNU
+Affero General Public License. NESSUNA GARANZIA, nei limiti di
+legge. Il testo completo, incluse le clausole su abusi dell'IA, è
+nel file \fBLICENSE\fP nella distribuzione sorgente.

@@ -1,3 +1,12 @@
+poutils (1.0.2) testing; urgency=medium
+
+  * man: document real poedit(1) behavior (mappings, PO files, options); roff-safe INPUT FORMAT with explicit tab (U+0009 / 0x09) and numbered layouts.
+  * man: LINGUAS poedit(1) as man/<lang>/poedit.1.in, Meson configure_file with @PROJECT_VERSION@, @PROJECT_YEAR@, @PROJECT_AUTHOR@, @PROJECT_EMAIL@; translated COPYRIGHT; install to share/man/<lang>/man1/poedit.1.
+  * README, README-zh: describe @var@ man build, install paths, and MANPATH for a given locale; align with man page strategy.
+  * tools: add gen_man_in.py to regenerate L10n man .in bodies from prior poedit(1) text when adding languages.
+
+ -- Lenik (谢继雷) <lenik@bodz.net>  Fri, 24 Apr 2026 16:00:00 +0800
+
 poutils (1.0.1) testing; urgency=medium
 
   * poedit: extend --help (AI step 4: find missing .po entries, translate manually, batch apply; clarify input format line).

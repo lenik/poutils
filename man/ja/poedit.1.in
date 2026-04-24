@@ -1,0 +1,83 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "ユーザーコマンド"
+.SH NAME
+poedit \- gettext の \fBmsgid\fP/\fBmsgstr\fP マッピングを \fB.po\fP に反映する
+.SH SYNOPSIS
+.B poedit
+.RI [ オプション ]
+.RI [ po\-\%ファイル ]...
+.SH DESCRIPTION
+.B poedit
+は UTF-8 のタブ区切りマッピングを読み、言語ごとに \fB.po\fP カタログへ
+.B msgstr
+をマージする。先に訳文を用意し、一括で流し込む用途向け。単に
+.B msgid
+から
+.B msgstr
+を機械補完することは想定していません。引数の
+.I po\-\%ファイル
+がなければ、入力に現れる各言語向けに
+.IR "po\-\%dir" / 言語 " " .po
+を更新（ファイルがある場合）。\fIpo\-\%ファイル\fP を付けると指定ファイルのみ。言語の決まり方は
+.BI poedit " \-\-help"
+を参照。
+.SH "INPUT FORMAT"
+空でない各行は、スペースではなくタブ文字（水平タブ、Unicode \fBU+0009\fP / ASCII\ 0x09）で区切られます。
+1 行につきタブ区切りのフィールド。フィールド内は C 風のエスケープ可。3 列（言語,
+\fBmsgid\fP,
+.BR msgstr
+）か、2 列で
+.BR \-l
+やパス等から言語が定まる場合。詳細は
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fIパス\fP ", " \-\-input=\fIパス
+1 ファイルまたは 1 ディレクトリ。未指定は標準入力。
+.TP
+.BR \-l " " \fI言語\fP ", " \-\-lang=\fI言語
+行頭に言語列がないときの言語コード。
+.TP
+.BR \-p " " \fIディレクトリ\fP ", " \-\-po\-dir=\fIディレクトリ
+基準 \fB.po\fP パス用（既定: \fBpo\fP）。
+.TP
+.BR \-d ", " \-\-dry\-run
+書き込まず表示のみ。
+.TP
+.BR \-v ", " \-\-verbose
+詳しめのログ。
+.TP
+.BR \-q ", " \-\-quiet
+ログ控えめ。
+.TP
+.BR \-h ", " \-\-help
+ヘルプ。終了 0。
+.TP
+.B \-\-version
+版表示。以降の引数: 更新対象
+.I po\-\%パス
+。
+.SH "EXIT STATUS"
+.TP
+.B 0
+成功。
+.TP
+.B 1
+失敗。
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+:
+.BI poedit " \-\-help
+の言語 (gettext) 。マッピング内容や \fB.po\fP 本文は影響しない。
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+執筆: @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>。
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+ライセンス: AGPL-3.0 以降. 本プログラムはフリーソフトです. GNU
+Affero General Public License の条件の下で変更、再配布できます。法が
+認める限り保証しません. AI 搾取等に反する追加条項を含む全文のライ
+センスはソース同梱の \fBLICENSE\fP を参照.

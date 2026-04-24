@@ -183,6 +183,34 @@ configure_file(
     install_dir: mandir / 'man1',
 )
 
+manpage_langs = [
+    'de',
+    'eo',
+    'fr',
+    'it',
+    'ja',
+    'ko',
+    'th',
+    'vi',
+    'zh_CN',
+    'zh_TW',
+]
+foreach lang : manpage_langs
+    manin = 'man' / lang / 'poedit.1.in'
+    if fs.is_file(meson.current_source_dir() / manin)
+        man_gen = configure_file(
+            input: manin,
+            output: 'poedit.1.' + lang,
+            configuration: config_man,
+        )
+        install_data(
+            man_gen,
+            install_dir: mandir / lang / 'man1',
+            rename: 'poedit.1',
+        )
+    endif
+endforeach
+
 # look task: list what installed files looks like
 # ninja install <tmpdir> && tree <tmpdir> && rm -fr <tmpdir>
 run_target(

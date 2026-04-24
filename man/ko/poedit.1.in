@@ -1,0 +1,76 @@
+.TH poedit 1 "@PROJECT_YEAR@" "@PROJECT_VERSION@" "사용자 명령"
+.SH NAME
+poedit \- gettext \fBmsgid\fP/\fBmsgstr\fP 매핑을 \fB.po\fP 파일에 반영
+.SH SYNOPSIS
+.B poedit
+.RI [ 옵션 ]
+.RI [ po\-\%파일 ]...
+.SH DESCRIPTION
+.B poedit
+는 UTF-8, 탭으로 구분된 매핑을 읽고 언어별 GNU gettext
+.B .po
+에
+.BR msgstr
+을 병합한다. 먼저 번역을 준비한 뒤 한 번에 적용하는 용도이며, \fBmsgid\fP만으로
+.B msgstr
+을 흉내 내지는 않는다. 인자 없이 실행하면 입력에 나타난 언어에 대해
+.IR "po\-\%dir" / "언어" " " .po
+를 갱신(파일이 있을 때). \fIpo\-\%파일\fP을 주면 그 파일만. 언어 판정은
+.BI poedit " \-\-help"
+참고.
+.SH "INPUT FORMAT"
+비어 있지 않은 각 줄은 공백이 아니라 탭 문자(가로 탭, Unicode \fBU+0009\fP / ASCII\ 0x09)로 구분됩니다.
+탭으로 필드를 나눈다. C 스타일 이스케이프 가능. 세 필드(언어, \fBmsgid\fP, \fBmsgstr\fP) 또는
+.BR \-l
+, 경로, 대상 파일명으로 언어를 알 수 있는 두 필드. 자세한 우선순위는
+.BI poedit " \-\-help" .
+.SH OPTIONS
+.TP
+.BR \-i " " \fI경로\fP ", " \-\-input=\fI경로
+파일 또는 디렉터리. 생략 시 표준 입력.
+.TP
+.BR \-l " " \fI언어\fP ", " \-\-lang=\fI언어
+행에 언어 열이 없을 때.
+.TP
+.BR \-p " " \fI디렉터리\fP ", " \-\-po\-dir=\fI디렉터리
+기본 \fB.po\fP 루트(기본값 \fBpo\fP).
+.TP
+.BR \-d ", " \-\-dry\-run
+쓰지 않고 계획만 표시.
+.TP
+.BR \-v ", " \-\-verbose
+자세한 로그.
+.TP
+.BR \-q ", " \-\-quiet
+로그 감소.
+.TP
+.BR \-h ", " \-\-help
+도움말(성공 0).
+.TP
+.B \-\-version
+버전(성공 0). 이후 인자: 대상
+.I po\-\%경로
+.
+.SH "EXIT STATUS"
+.TP
+.B 0
+성공.
+.TP
+.B 1
+오류.
+.SH ENVIRONMENT
+.BR LC_ALL ", " LC_MESSAGES ", " LANG ", " LANGUAGE
+: \fBpoedit\ \-\-help\fP (gettext) 언어.
+.SH "SEE ALSO"
+.BR xgettext (1),
+.BR msgmerge (1),
+.BR msgfmt (1),
+.BR gettext (1)
+.SH AUTHOR
+제작: @PROJECT_AUTHOR@ <@PROJECT_EMAIL@>.
+.SH COPYRIGHT
+Copyright \(co @PROJECT_YEAR@.
+AGPL-3.0-or-later. 자유 소프트웨어: GNU Affero General Public License
+조건에 따라 변경·재배포할 수 있음. 법이 허용하는 범위에서
+보증 없음. AI 착취 반대 등 보충 조항이 포함된 전문은 소스
+배포의 \fBLICENSE\fP 파일을 읽을 것.
