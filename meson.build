@@ -175,13 +175,8 @@ config_man.set('PROJECT_AUTHOR', project_author)
 config_man.set('PROJECT_EMAIL', project_email)
 config_man.set('PROJECT_YEAR', project_year)
 
-configure_file(
-    input: 'poedit.1.in',
-    output: 'poedit.1',
-    configuration: config_man,
-    install: true,
-    install_dir: mandir / 'man1',
-)
+# English man page is built from docs/poedit.adoc via asciidoctor (below).
+# Localized groff sources remain under man/<lang>/ until migrated to docs/<lang>/.
 
 manpage_langs = [
     'de',
@@ -300,3 +295,28 @@ run_target(
         '''.format(get_option('prefix'), datadir, mandir),
     ],
 )
+asciidoctor = find_program('asciidoctor', required: true)
+
+man_puffs = [
+    'poedit',
+]
+foreach puff : man_puffs
+  custom_target(
+    puff + '-man',
+    input: 'docs' / (puff + '.adoc'),
+    output: puff + '.1',
+    command: [
+      asciidoctor,
+      '-b', 'manpage',
+      '-a', 'project-version=' + meson.project_version(),
+      '-a', 'project-year=@0@'.format(project_year),
+      '-a', 'project-author=' + project_author,
+      '-a', 'project-email=' + project_email,
+      '-o', '@OUTPUT@',
+      '@INPUT@',
+    ],
+    build_by_default: true,
+    install: true,
+    install_dir: mandir / 'man1',
+  )
+endforeach
