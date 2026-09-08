@@ -23,11 +23,19 @@ Auflösung von Sprachangaben: siehe
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 Jede nichtleere Zeile wird an Tabulatorzeichen getrennt (horizontaler Tab, Unicode \fBU+0009\fP bzw. ASCII\ 0x09), nicht an Leerzeichen.
-Pro Zeile Tab-getrennte Felder, optionale C-Escapes in den Feldern. Entweder
-drei Spalten (Sprachcode, \fBmsgid\fP, \fBmsgstr\fP) oder zwei Spalten, wenn
-die Sprache per
-.BR \-l ","
-Eingabepfad oder Zieldatei bestimmbar ist, wie
+Optionale C-Escapes in den Feldern. Zwei Layouts:
+.I langs
+(kommagetrennte Sprachcodes),
+.BR msgid
+und je eine
+.BR msgstr
+-Spalte pro Sprache; oder ohne
+.IR langs -Spalte,
+mit Sprachen aus
+.BR \-l " " \-\-langs
+oder dem Pfad. Die Anzahl der
+.B msgstr
+-Spalten muss der Sprachanzahl entsprechen; siehe
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
@@ -36,8 +44,10 @@ Datei oder Verzeichnis; fehlt
 .BR \-i ","
 Standard-Eingabe.
 .TP
-.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
-Sprachkürzel, wenn kein Sprachfeld in der Zeile.
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+Kommagetrennte Sprachcodes, wenn keine langs-Spalte in der Zeile; Anzahl der
+.B msgstr
+-Spalten muss passen.
 .TP
 .BR \-p " " \fIverz\fP ", " \-\-po\-dir=\fIverz
 Basis (Vorgabe: \fBpo\fP).

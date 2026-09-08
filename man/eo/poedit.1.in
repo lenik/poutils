@@ -29,9 +29,19 @@ Celoj: implicitaj
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 Ĉiu nemalplena linio estas dividata per tab-signoj (horizontala tabo, Unicode \fBU+0009\fP aŭ ASCII\ 0x09), ne per spacoj.
-Tab\-\%apartitaj kampoj, C-escapoj eblas. Tri: lingvo, \fBmsgid\fP, \fBmsgstr\fP. Du, kie lingvo resolvigas per
-.BR \-l ","
-lai
+C-escapoj eblas. Du aranĝoj:
+.I langs
+(komoj disigas lingvo-kodojn),
+.BR msgid
+kaj po unu
+.B msgstr
+-kolumno por lingvo; aŭ sen
+.IR langs -kolumno,
+kun lingvoj el
+.BR \-l " " \-\-langs
+aŭ la vojo. Nombro de
+.B msgstr
+devas egali; vidu
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
@@ -39,8 +49,12 @@ lai
 Fonto; manke
 .BR stdin .
 .TP
-.BR \-l " " \fIlingvo\fP ", " \-\-lang=\fIlingvo
-Kodeto.
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+Komoj-disigitaj lingvo-kodoj se mankas
+.IR langs -kolumno;
+nombro de
+.B msgstr
+devas kongrui.
 .TP
 .BR \-p " " \fIre\fP ", " \-\-po\-dir=\fIre
 Bazretejo, def. \fBpo\fP.

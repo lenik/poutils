@@ -23,17 +23,27 @@ poedit \- 将 gettext \fBmsgid\fP/\fBmsgstr\fP 批量写入 \fB.po\fP
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 每个非空行按制表符（水平 Tab，Unicode \fBU+0009\fP / ASCII\ 0x09）分割，而不是按空格分割。
-每行以制表符分栏，字段中可使用类 C 转义。三列：语言、\fBmsgid\fP、\fBmsgstr\fP；或两列且可通过
-.BR \-l
-、路径、目标名解析语言。详见
+每行以制表符分栏，字段中可使用类 C 转义。两种布局：
+.IR langs
+（逗号分隔的多种语言）、
+.BR msgid
+、以及每种语言一列
+.BR msgstr
+；或不含
+.I langs
+列，而由
+.BR \-l " " \-\-langs
+或路径推断语言。
+.B msgstr
+列数须与语言数一致。详见
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
 .BR \-i " " \fI路径\fP ", " \-\-input=\fI路径
 一个文件或目录；省略则从标准输入读入。
 .TP
-.BR \-l " " \fI语言\fP ", " \-\-lang=\fI语言
-当行内没有语言列时的语言码。
+.BR \-l " " \fI语言列表\fP ", " \-\-langs=\fI语言列表
+逗号分隔的语言代码，用于行内没有 langs 列时；\fBmsgstr\fP 列数须与之匹配。
 .TP
 .BR \-p " " \fI目录\fP ", " \-\-po\-dir=\fI目录
 默认 \fB.po\fP 根（默认: \fBpo\fP）。

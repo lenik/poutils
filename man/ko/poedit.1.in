@@ -20,17 +20,27 @@ poedit \- gettext \fBmsgid\fP/\fBmsgstr\fP 매핑을 \fB.po\fP 파일에 반영
 참고.
 .SH "INPUT FORMAT"
 비어 있지 않은 각 줄은 공백이 아니라 탭 문자(가로 탭, Unicode \fBU+0009\fP / ASCII\ 0x09)로 구분됩니다.
-탭으로 필드를 나눈다. C 스타일 이스케이프 가능. 세 필드(언어, \fBmsgid\fP, \fBmsgstr\fP) 또는
-.BR \-l
-, 경로, 대상 파일명으로 언어를 알 수 있는 두 필드. 자세한 우선순위는
+C 스타일 이스케이프 가능. 두 가지 형식:
+.I langs
+(쉼표로 구분된 언어 코드),
+.BR msgid
+, 언어별
+.BR msgstr
+열; 또는
+.I langs
+열 없이
+.BR \-l " " \-\-langs
+나 경로로 언어를 결정.
+.B msgstr
+열 수는 언어 수와 같아야 합니다. 자세한 우선순위는
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
 .BR \-i " " \fI경로\fP ", " \-\-input=\fI경로
 파일 또는 디렉터리. 생략 시 표준 입력.
 .TP
-.BR \-l " " \fI언어\fP ", " \-\-lang=\fI언어
-행에 언어 열이 없을 때.
+.BR \-l " " \fI언어목록\fP ", " \-\-langs=\fI언어목록
+쉼표로 구분된 언어 코드(행에 langs 열이 없을 때). \fBmsgstr\fP 열 수는 일치해야 함.
 .TP
 .BR \-p " " \fI디렉터리\fP ", " \-\-po\-dir=\fI디렉터리
 기본 \fB.po\fP 루트(기본값 \fBpo\fP).

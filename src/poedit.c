@@ -29,11 +29,16 @@ enum { OPT_VERSION = 256 };
 typedef struct {
     const char *input_path;
     const char *po_dir;
-    const char *lang;
+    const char *langs; /* comma-separated language codes */
     bool dry_run;
     bool verbose;
     bool quiet;
 } options_t;
+
+typedef struct {
+    char **items;
+    size_t len;
+} lang_list_t;
 
 typedef struct {
     char *lang;
@@ -123,9 +128,92 @@ static char *lang_from_subdir(const char *path) {
     return lang;
 }
 
+static void lang_list_free(lang_list_t *list) {
+    if (!list) {
+        return;
+    }
+    for (size_t i = 0; i < list->len; i++) {
+        free(list->items[i]);
+    }
+    free(list->items);
+    list->items = NULL;
+    list->len = 0;
+}
+
+/* Split comma-separated langs; empty segments are skipped; surrounding spaces trimmed. */
+static int lang_list_parse(lang_list_t *list, const char *s) {
+    list->items = NULL;
+    list->len = 0;
+    if (!s || s[0] == '\0') {
+        return 0;
+    }
+    size_t cap = 0;
+    const char *p = s;
+    while (*p) {
+        while (*p == ' ' || *p == '\t') {
+            p++;
+        }
+        if (*p == '\0') {
+            break;
+        }
+        const char *start = p;
+        while (*p && *p != ',') {
+            p++;
+        }
+        const char *end = p;
+        while (end > start && (end[-1] == ' ' || end[-1] == '\t')) {
+            end--;
+        }
+        if (end > start) {
+            if (list->len == cap) {
+                size_t next = cap ? cap * 2 : 4;
+                char **grown = realloc(list->items, next * sizeof(*grown));
+                if (!grown) {
+                    lang_list_free(list);
+                    return -1;
+                }
+                list->items = grown;
+                cap = next;
+            }
+            size_t n = (size_t)(end - start);
+            char *item = malloc(n + 1);
+            if (!item) {
+                lang_list_free(list);
+                return -1;
+            }
+            memcpy(item, start, n);
+            item[n] = '\0';
+            list->items[list->len++] = item;
+        }
+        if (*p == ',') {
+            p++;
+        }
+    }
+    return 0;
+}
+
+/* Single language from --langs when it names exactly one code; else NULL. */
+static char *langs_single_or_null(const char *langs) {
+    lang_list_t list;
+    if (lang_list_parse(&list, langs) != 0) {
+        return NULL;
+    }
+    char *out = NULL;
+    if (list.len == 1) {
+        out = list.items[0];
+        list.items[0] = NULL;
+    }
+    lang_list_free(&list);
+    return out;
+}
+
 static char *resolve_fallback_lang(const options_t *opt, const char *path_hint) {
-    if (opt->lang) {
-        return xstrdup(opt->lang);
+    if (opt->langs) {
+        char *one = langs_single_or_null(opt->langs);
+        if (one) {
+            return one;
+        }
+        /* Multiple --langs: do not use as a single fallback language. */
     }
     if (!path_hint) {
         return NULL;
@@ -139,8 +227,11 @@ static char *resolve_fallback_lang(const options_t *opt, const char *path_hint) 
 }
 
 static char *resolve_target_file_lang(const options_t *opt, const char *path) {
-    if (opt->lang) {
-        return xstrdup(opt->lang);
+    if (opt->langs) {
+        char *one = langs_single_or_null(opt->langs);
+        if (one) {
+            return one;
+        }
     }
     char *name = lang_from_filename(path);
     if (name && name[0] != '\0') {
@@ -222,18 +313,19 @@ void usage(FILE *out) {
     fprintln(out, _("Usage: poedit [OPTIONS]"));
     print_design_purpose(out);
     fputc('\n', out);
-    fprintln(out, _("Input format: (lang can be inferred from filename or subdir)"));
-    fprintln(out, _("  lang<TAB>msgid<TAB>msgstr"));
+    fprintln(out, _("Input format: (langs can be inferred from --langs, filename or subdir)"));
+    fprintln(out, _("  langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"));
     fprintln(out, _("-or-"));
-    fprintln(out, _("  msgid<TAB>msgstr"));
+    fprintln(out, _("  msgid<TAB>msgstr[<TAB>msgstr...]"));
     fputc('\n', out);
-    fprintln(out, _("  lang conflict resolution: [lang<TAB>] > [filename] > [subdir]"));
+    fprintln(out, _("  langs: comma-separated language codes; one msgstr column per lang."));
+    fprintln(out, _("  langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"));
     fputc('\n', out);
     fprintln(out, _("Options:"));
     fputs("  -i, --input PATH      ", out);
     fprintln(out, _("mapping file or directory (optional: default stdin)"));
-    fputs("  -l, --lang LANG       ", out);
-    fprintln(out, _("language code for single mapping file"));
+    fputs("  -l, --langs LANGS     ", out);
+    fprintln(out, _("comma-separated language codes for mapping rows without langs column"));
     fputs("  -p, --po-dir DIR      ", out);
     fprintln(out, _("PO directory (default: po)"));
     fputs("      --dry-run         ", out);
@@ -253,7 +345,7 @@ static int parse_args(int argc, char **argv, options_t *opt) {
     opt->po_dir = "po";
     static const struct option long_opts[] = {
         {"input", required_argument, NULL, 'i'},
-        {"lang", required_argument, NULL, 'l'},
+        {"langs", required_argument, NULL, 'l'},
         {"po-dir", required_argument, NULL, 'p'},
         {"dry-run", no_argument, NULL, 'd'},
         {"verbose", no_argument, NULL, 'v'},
@@ -272,7 +364,7 @@ static int parse_args(int argc, char **argv, options_t *opt) {
             opt->input_path = optarg;
             break;
         case 'l':
-            opt->lang = optarg;
+            opt->langs = optarg;
             break;
         case 'p':
             opt->po_dir = optarg;
@@ -389,65 +481,167 @@ static int analyze_inputs(const options_t *opt, table_t *table) {
     return rc;
 }
 
+static int add_msgid_msgstr_to_lang(lang_map_list_t *maps, const char *lang, const char *raw_msgid,
+                                    const char *raw_msgstr) {
+    char *msgid = po_unescape_c_string(raw_msgid);
+    char *msgstr = po_unescape_c_string(raw_msgstr);
+    if (!msgid || !msgstr) {
+        free(msgid);
+        free(msgstr);
+        return -1;
+    }
+    translation_map_t *map = lang_map_get_or_add(maps, lang);
+    int rc = (!map || translation_map_add(map, msgid, msgstr) != 0) ? -1 : 0;
+    free(msgid);
+    free(msgstr);
+    return rc;
+}
+
+/*
+ * Row layouts:
+ *   langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]  (msgstr count == langs count)
+ *   msgid<TAB>msgstr[<TAB>msgstr...]            (msgstr count == --langs count,
+ *                                               or 1 with filename/subdir fallback)
+ *
+ * When --langs is set, prefer the msgid-first layout if column counts match.
+ * A langs column is used when the first field contains a comma, or when
+ * --langs is unset / does not match the msgid-first column count.
+ */
 static int build_maps_from_entries(const options_t *opt, const table_t *table,
                                    lang_map_list_t *maps) {
+    lang_list_t opt_langs = {0};
+    if (lang_list_parse(&opt_langs, opt->langs) != 0) {
+        return 1;
+    }
+
     input_scan_stats_t stats = {0, 0};
     for (size_t i = 0; i < table->len; i++) {
         size_t cols = row_col_count(&table->rows[i]);
-        if (cols == 2 || cols == 3) {
-            stats.total_entries++;
+        if (cols < 2) {
+            continue;
         }
-        if (cols == 3 && row_get(&table->rows[i], 0) && row_get(&table->rows[i], 0)[0] != '\0') {
+        stats.total_entries++;
+        const char *c0 = row_get(&table->rows[i], 0);
+        if (c0 && strchr(c0, ',')) {
             stats.entries_with_explicit_lang++;
+            continue;
+        }
+        /* Single-lang first column: langs + msgid + msgstr... => cols >= 3 and
+         * not matching msgid-first with --langs. */
+        if (cols >= 3) {
+            if (!(opt_langs.len > 0 && cols == 1 + opt_langs.len)) {
+                stats.entries_with_explicit_lang++;
+            }
         }
     }
-    if (stats.total_entries > 0 && stats.entries_with_explicit_lang == 0) {
+    if (stats.total_entries > 0 && stats.entries_with_explicit_lang == 0 && opt_langs.len == 0) {
         fprintln(stderr, _("error: input contains only msgid<TAB>msgstr entries; explicit language "
                            "is required."));
-        fprintln(stderr, _("Please use [lang<TAB>]msgid<TAB>msgstr format."));
+        fprintln(stderr, _("Please use [langs<TAB>]msgid<TAB>msgstr... or --langs."));
         fputc('\n', stderr);
         print_design_purpose(stderr);
+        lang_list_free(&opt_langs);
         return 1;
     }
+
     for (size_t i = 0; i < table->len; i++) {
         const row_t *row = &table->rows[i];
         size_t cols = row_col_count(row);
-        if (cols != 2 && cols != 3) {
+        if (cols < 2) {
             fprintf(stderr, _("error: invalid field count in %s:%d\n"), row->source_name,
                     row->line_no);
+            lang_list_free(&opt_langs);
             return 1;
         }
-        char *fallback = resolve_fallback_lang(opt, row->source_name);
-        const char *inline_lang = (cols == 3) ? row_get(row, 0) : NULL;
-        const char *chosen =
-            (inline_lang && inline_lang[0]) ? inline_lang : (opt->lang ? opt->lang : fallback);
-        if (!chosen) {
-            fprintf(stderr, _("error: no language resolved for %s:%d\n"), row->source_name,
+
+        const char *c0 = row_get(row, 0);
+        bool first_has_comma = (c0 && strchr(c0, ',') != NULL);
+        lang_list_t row_langs = {0};
+        size_t msgid_idx = 0;
+        bool use_inline_langs = false;
+
+        if (first_has_comma) {
+            if (lang_list_parse(&row_langs, c0) != 0) {
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            if (row_langs.len == 0 || cols != 2 + row_langs.len) {
+                fprintf(stderr,
+                        _("error: langs/msgstr count mismatch in %s:%d (langs=%zu, fields=%zu)\n"),
+                        row->source_name, row->line_no, row_langs.len, cols);
+                lang_list_free(&row_langs);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            use_inline_langs = true;
+            msgid_idx = 1;
+        } else if (opt_langs.len > 0) {
+            if (cols != 1 + opt_langs.len) {
+                fprintf(stderr,
+                        _("error: langs/msgstr count mismatch in %s:%d (langs=%zu, fields=%zu)\n"),
+                        row->source_name, row->line_no, opt_langs.len, cols);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            msgid_idx = 0;
+        } else if (cols >= 3) {
+            if (lang_list_parse(&row_langs, c0) != 0) {
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            if (row_langs.len == 0 || cols != 2 + row_langs.len) {
+                fprintf(stderr,
+                        _("error: langs/msgstr count mismatch in %s:%d (langs=%zu, fields=%zu)\n"),
+                        row->source_name, row->line_no, row_langs.len, cols);
+                lang_list_free(&row_langs);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            use_inline_langs = true;
+            msgid_idx = 1;
+        } else if (cols == 2) {
+            char *fallback = resolve_fallback_lang(opt, row->source_name);
+            if (!fallback) {
+                fprintf(stderr, _("error: no language resolved for %s:%d\n"), row->source_name,
+                        row->line_no);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            if (lang_list_parse(&row_langs, fallback) != 0) {
+                free(fallback);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            free(fallback);
+            if (row_langs.len != 1) {
+                fprintf(stderr, _("error: no language resolved for %s:%d\n"), row->source_name,
+                        row->line_no);
+                lang_list_free(&row_langs);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
+            use_inline_langs = true;
+            msgid_idx = 0;
+        } else {
+            fprintf(stderr, _("error: invalid field count in %s:%d\n"), row->source_name,
                     row->line_no);
-            free(fallback);
+            lang_list_free(&opt_langs);
             return 1;
         }
-        const char *raw_msgid = (cols == 3) ? row_get(row, 1) : row_get(row, 0);
-        const char *raw_msgstr = (cols == 3) ? row_get(row, 2) : row_get(row, 1);
-        char *msgid = po_unescape_c_string(raw_msgid);
-        char *msgstr = po_unescape_c_string(raw_msgstr);
-        if (!msgid || !msgstr) {
-            free(msgid);
-            free(msgstr);
-            free(fallback);
-            return 1;
+
+        const lang_list_t *langs = use_inline_langs ? &row_langs : &opt_langs;
+        const char *raw_msgid = row_get(row, msgid_idx);
+        for (size_t li = 0; li < langs->len; li++) {
+            const char *raw_msgstr = row_get(row, msgid_idx + 1 + li);
+            if (add_msgid_msgstr_to_lang(maps, langs->items[li], raw_msgid, raw_msgstr) != 0) {
+                lang_list_free(&row_langs);
+                lang_list_free(&opt_langs);
+                return 1;
+            }
         }
-        translation_map_t *map = lang_map_get_or_add(maps, chosen);
-        if (!map || translation_map_add(map, msgid, msgstr) != 0) {
-            free(msgid);
-            free(msgstr);
-            free(fallback);
-            return 1;
-        }
-        free(msgid);
-        free(msgstr);
-        free(fallback);
+        lang_list_free(&row_langs);
     }
+    lang_list_free(&opt_langs);
     return 0;
 }
 

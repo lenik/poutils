@@ -22,20 +22,27 @@ poedit \- gettext の \fBmsgid\fP/\fBmsgstr\fP マッピングを \fB.po\fP に�
 を参照。
 .SH "INPUT FORMAT"
 空でない各行は、スペースではなくタブ文字（水平タブ、Unicode \fBU+0009\fP / ASCII\ 0x09）で区切られます。
-1 行につきタブ区切りのフィールド。フィールド内は C 風のエスケープ可。3 列（言語,
-\fBmsgid\fP,
+フィールド内は C 風のエスケープ可。形式は二通り:
+.I langs
+（カンマ区切りの言語コード）、
+.BR msgid
+、言語ごとの
 .BR msgstr
-）か、2 列で
-.BR \-l
-やパス等から言語が定まる場合。詳細は
+列、または
+.I langs
+列なしで
+.BR \-l " " \-\-langs
+やパスから言語を決める形式。
+.B msgstr
+列数は言語数と一致させる必要があります。詳細は
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
 .BR \-i " " \fIパス\fP ", " \-\-input=\fIパス
 1 ファイルまたは 1 ディレクトリ。未指定は標準入力。
 .TP
-.BR \-l " " \fI言語\fP ", " \-\-lang=\fI言語
-行頭に言語列がないときの言語コード。
+.BR \-l " " \fI言語リスト\fP ", " \-\-langs=\fI言語リスト
+カンマ区切りの言語コード（行に langs 列がないとき）。\fBmsgstr\fP 列数は一致必須。
 .TP
 .BR \-p " " \fIディレクトリ\fP ", " \-\-po\-dir=\fIディレクトリ
 基準 \fB.po\fP パス用（既定: \fBpo\fP）。

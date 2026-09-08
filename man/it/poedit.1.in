@@ -24,9 +24,19 @@ se esiste. Con argomenti, solo quei file; spesso la lingua deriva dal nome. Prio
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 Ogni riga non vuota viene separata sui caratteri di tabulazione (tab orizzontale, Unicode \fBU+0009\fP o ASCII\ 0x09), non sugli spazi.
-Tab come separatore; possibili escape in stile C. Tre campi: lingua, \fBmsgid\fP, \fBmsgstr\fP, oppure due, se la lingua si ricava con
-.BR \-l ","
-percorso, nome, vedi
+Escape in stile C possibili. Due layout:
+.I langs
+(codici separati da virgola),
+.BR msgid
+e una colonna
+.B msgstr
+per lingua; oppure senza colonna
+.IR langs ,
+con lingue da
+.BR \-l " " \-\-langs
+o dal percorso. Il numero di colonne
+.B msgstr
+deve coincidere; vedi
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
@@ -34,8 +44,12 @@ percorso, nome, vedi
 File o directory, altrimenti
 .BR stdin .
 .TP
-.BR \-l " " \fIlingua\fP ", " \-\-lang=\fIlingua
-Codice se manca la colonna lingua.
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+Codici lingua separati da virgola se manca la colonna
+.IR langs ;
+il numero di colonne
+.B msgstr
+deve corrispondere.
 .TP
 .BR \-p " " \fIdir\fP ", " \-\-po\-dir=\fIdir
 Base (def.: \fBpo\fP).

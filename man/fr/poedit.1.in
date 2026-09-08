@@ -29,11 +29,19 @@ souvent du nom (ex. \fBja.po\fP). Résolution: voir
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 Chaque ligne non vide est séparée sur des tabulations (tabulation horizontale, Unicode \fBU+0009\fP ou ASCII\ 0x09), et non sur des espaces.
-Champs séparés par des tabulations ; échappements de style C possibles. Trois
-colonnes (langue, \fBmsgid\fP, \fBmsgstr\fP) ou deux, la langue étant
-reconstituée grâce à
-.BR \-l ","
-l'emplacement d'entrée ou de sortie, cf.
+Échappements de style C possibles. Deux dispositions :
+.I langs
+(codes séparés par des virgules),
+.BR msgid
+, puis une colonne
+.B msgstr
+par langue ; ou sans colonne
+.IR langs ,
+avec les langues fournies par
+.BR \-l " " \-\-langs
+ou le chemin. Le nombre de colonnes
+.B msgstr
+doit égaler le nombre de langues ; cf.
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
@@ -41,8 +49,12 @@ l'emplacement d'entrée ou de sortie, cf.
 Fichier ou répertoire, sinon
 .BR stdin "."
 .TP
-.BR \-l " " \fIlangue\fP ", " \-\-lang=\fIlangue
-Code quand la ligne n'indique pas de langue.
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+Codes de langue séparés par des virgules si la ligne n'a pas de colonne
+.IR langs ;
+le nombre de colonnes
+.B msgstr
+doit correspondre.
 .TP
 .BR \-p " " \fIrep\fP ", " \-\-po\-dir=\fIrep
 Répertoire de base (défaut: \fBpo\fP).

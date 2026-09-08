@@ -12,7 +12,7 @@
 
 ## 示例应用：`poedit`
 
-`poedit` 从映射输入批量更新 `po/<语言>.po`（TSV/文本行：`[lang<制表符>]msgid<制表符>msgstr` 等，详见 `poedit --help`）。
+`poedit` 从映射输入批量更新 `po/<语言>.po`（TSV/文本行：`langs<制表符>msgid<制表符>msgstr[<制表符>msgstr...]`，或 `msgid` 加多个 `msgstr` 并配合 `-l/--langs`；多种语言用逗号分隔，详见 `poedit --help`）。
 
 ```bash
 poedit [选项] [PO 文件...]
@@ -75,8 +75,7 @@ ninja -C /build
 
 ### 手册页
 
-英文与各语言 `poedit(1)` 分别来自
-`poedit.1.in` 与
+英文 `poedit(1)` 由 Asciidoctor 从 `docs/poedit.adoc` 生成；各语言仍来自
 `man/<语言>/poedit.1.in`，由 Meson
 `configure_file` 用
 `@PROJECT_VERSION@`、

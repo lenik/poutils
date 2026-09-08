@@ -24,10 +24,19 @@ nếu tồn tại. Có tham số thì chỉ những tệp đó; ưu tiên ngôn 
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 Mỗi dòng không rỗng được tách theo ký tự tab (tab ngang, Unicode \fBU+0009\fP hoặc ASCII\ 0x09), không phải dấu cách.
-Tab phân tách, escape kiểu C. Ba cột (mã, \fBmsgid\fP, \fBmsgstr\fP) hoặc hai
-cột khi suy ra ngôn từ
-.BR \-l
-, đường dẫn, tên. Chi tiết:
+Escape kiểu C được phép. Hai bố cục:
+.I langs
+(mã cách nhau bằng dấu phẩy),
+.BR msgid
+và một cột
+.B msgstr
+mỗi ngôn ngữ; hoặc không có cột
+.IR langs ,
+lấy ngôn từ
+.BR \-l " " \-\-langs
+hay đường dẫn. Số cột
+.B msgstr
+phải khớp; xem
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
@@ -35,8 +44,12 @@ cột khi suy ra ngôn từ
 Tệp hoặc thư mục; bỏ qua sẽ dùng
 .BR stdin .
 .TP
-.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
-Mã nếu dòng thiếu cột ngôn.
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+Mã ngôn ngữ cách nhau bằng dấu phẩy khi thiếu cột
+.IR langs ;
+số cột
+.B msgstr
+phải khớp.
 .TP
 .BR \-p " " \fIthm\fP ", " \-\-po\-dir=\fIthm
 Gốc (mặc định: \fBpo\fP).

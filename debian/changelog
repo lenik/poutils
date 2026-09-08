@@ -1,3 +1,14 @@
+poutils (1.1.0) testing; urgency=medium
+
+  * poedit: rename --lang to -l/--langs LANGS (comma-separated); input
+    supports langs + multiple msgstr columns.
+  * poedit: refresh gettext catalogs (all LINGUAS) and localized man pages
+    for the new langs/multi-msgstr input format and --langs option.
+  * man: English poedit(1) from docs/poedit.adoc via Asciidoctor; add
+    asciidoctor to Build-Depends (zfr-lint ZL004/ZL008/ZL023).
+
+ -- Lenik (谢继雷) <lenik@bodz.net>  Tue, 08 Sep 2026 13:48:59 +0800
+
 poutils (1.0.2) testing; urgency=medium
 
   * man: document real poedit(1) behavior (mappings, PO files, options); roff-safe INPUT FORMAT with explicit tab (U+0009 / 0x09) and numbered layouts.

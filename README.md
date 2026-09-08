@@ -43,16 +43,18 @@ Input source auto-detection:
 Mapping line format (UTF-8):
 
 ```text
-[lang<TAB>]msgid<TAB>msgstr
+langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]
+msgid<TAB>msgstr[<TAB>msgstr...]
 ```
 
-- `lang` column is optional and has highest priority.
+- `langs` is a comma-separated list of language codes; provide one `msgstr` column per language.
+- The `langs` column is optional when `-l/--langs` (or a single-language path fallback) supplies the list.
 - Use C-style escapes in fields when needed (`\n`, `\t`, `\"`, `\\`).
 
 Language discovery priority (highest to lowest):
 
-1. `[lang<TAB>]` in each input line
-2. `--lang`
+1. `langs<TAB>` in each input line
+2. `--langs`
 3. subdir name
 4. filename
 
@@ -118,13 +120,12 @@ ninja -C /build
 
 ### Man pages
 
-`poedit(1)` is built from a Meson
-`configure_file` step: the top-level
-`poedit.1.in` and each
-`man/<lang>/poedit.1.in` use `@PROJECT_VERSION@`, `@PROJECT_YEAR@`,
-`@PROJECT_AUTHOR@`, and `@PROJECT_EMAIL@` in the manual header, author line, and copyright text. The build writes `poedit.1` and
-`poedit.1.<lang>` into the build tree, and install renames the latter to
-`poedit(1)` under
+English `poedit(1)` is built with Asciidoctor from
+`docs/poedit.adoc` (attributes `project-version`, `project-year`,
+`project-author`, `project-email`). Localized pages still come from
+`man/<lang>/poedit.1.in` via Meson `configure_file` with
+`@PROJECT_VERSION@`, `@PROJECT_YEAR@`, `@PROJECT_AUTHOR@`, and
+`@PROJECT_EMAIL@`, installed as `poedit(1)` under
 `$PREFIX/share/man/<lang>/man1/`
 (for each LINGUAS such as
 `ja`, `zh_CN`, …). To read one translation without

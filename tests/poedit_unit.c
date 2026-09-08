@@ -30,10 +30,20 @@ END_TEST
 
 START_TEST(test_resolve_target_file_lang_with_override) {
     options_t opt = {0};
-    opt.lang = "ja";
+    opt.langs = "ja";
     char *lang = resolve_target_file_lang(&opt, "po/zh_CN.po");
     ck_assert_ptr_nonnull(lang);
     ck_assert_str_eq(lang, "ja");
+    free(lang);
+}
+END_TEST
+
+START_TEST(test_resolve_target_file_lang_ignores_multi_langs) {
+    options_t opt = {0};
+    opt.langs = "ja,ko";
+    char *lang = resolve_target_file_lang(&opt, "po/zh_CN.po");
+    ck_assert_ptr_nonnull(lang);
+    ck_assert_str_eq(lang, "zh_CN");
     free(lang);
 }
 END_TEST
@@ -53,6 +63,17 @@ START_TEST(test_resolve_fallback_lang_uses_filename) {
     ck_assert_ptr_nonnull(lang);
     ck_assert_str_eq(lang, "zh_TW");
     free(lang);
+}
+END_TEST
+
+START_TEST(test_lang_list_parse_trims_and_splits) {
+    lang_list_t list;
+    ck_assert_int_eq(lang_list_parse(&list, " zh_CN , ja,ko "), 0);
+    ck_assert_uint_eq(list.len, 3);
+    ck_assert_str_eq(list.items[0], "zh_CN");
+    ck_assert_str_eq(list.items[1], "ja");
+    ck_assert_str_eq(list.items[2], "ko");
+    lang_list_free(&list);
 }
 END_TEST
 
@@ -97,6 +118,74 @@ START_TEST(test_build_maps_from_entries_accepts_explicit_lang_and_updates_map) {
 }
 END_TEST
 
+START_TEST(test_build_maps_from_entries_multi_langs_inline) {
+    options_t opt = {0};
+    table_t *table = table_new();
+    ck_assert_ptr_nonnull(table);
+    row_t *r = row_parse("zh_CN,ja\thello\t你好\tこんにちは");
+    ck_assert_ptr_nonnull(r);
+    ck_assert_int_eq(table_append_row(table, r, "maps/any.tsv", 1), 0);
+
+    lang_map_list_t maps;
+    lang_map_list_init(&maps);
+    ck_assert_int_eq(build_maps_from_entries(&opt, table, &maps), 0);
+    ck_assert_uint_eq(maps.len, 2);
+    const translation_map_t *zh = find_lang_map(&maps, "zh_CN");
+    const translation_map_t *ja = find_lang_map(&maps, "ja");
+    ck_assert_ptr_nonnull(zh);
+    ck_assert_ptr_nonnull(ja);
+    ck_assert_str_eq(translation_map_get(zh, "hello"), "你好");
+    ck_assert_str_eq(translation_map_get(ja, "hello"), "こんにちは");
+
+    lang_map_list_free(&maps);
+    row_free(r);
+    table_free(table);
+}
+END_TEST
+
+START_TEST(test_build_maps_from_entries_multi_langs_option) {
+    options_t opt = {0};
+    opt.langs = "zh_CN,ja";
+    table_t *table = table_new();
+    ck_assert_ptr_nonnull(table);
+    row_t *r = row_parse("hello\t你好\tこんにちは");
+    ck_assert_ptr_nonnull(r);
+    ck_assert_int_eq(table_append_row(table, r, "maps/any.tsv", 1), 0);
+
+    lang_map_list_t maps;
+    lang_map_list_init(&maps);
+    ck_assert_int_eq(build_maps_from_entries(&opt, table, &maps), 0);
+    ck_assert_uint_eq(maps.len, 2);
+    ck_assert_str_eq(translation_map_get(find_lang_map(&maps, "zh_CN"), "hello"), "你好");
+    ck_assert_str_eq(translation_map_get(find_lang_map(&maps, "ja"), "hello"), "こんにちは");
+
+    lang_map_list_free(&maps);
+    row_free(r);
+    table_free(table);
+}
+END_TEST
+
+START_TEST(test_build_maps_from_entries_langs_option_allows_msgid_only_rows) {
+    options_t opt = {0};
+    opt.langs = "zh_CN";
+    table_t *table = table_new();
+    ck_assert_ptr_nonnull(table);
+    row_t *r = row_parse("hello\tworld");
+    ck_assert_ptr_nonnull(r);
+    ck_assert_int_eq(table_append_row(table, r, "maps/any.tsv", 1), 0);
+
+    lang_map_list_t maps;
+    lang_map_list_init(&maps);
+    ck_assert_int_eq(build_maps_from_entries(&opt, table, &maps), 0);
+    ck_assert_uint_eq(maps.len, 1);
+    ck_assert_str_eq(translation_map_get(&maps.items[0].map, "hello"), "world");
+
+    lang_map_list_free(&maps);
+    row_free(r);
+    table_free(table);
+}
+END_TEST
+
 START_TEST(test_build_maps_from_entries_invalid_column_count) {
     options_t opt = {0};
     table_t *table = table_new();
@@ -105,6 +194,25 @@ START_TEST(test_build_maps_from_entries_invalid_column_count) {
     row_t *r = row_parse("a\tb\tc\td");
     ck_assert_ptr_nonnull(r);
     ck_assert_int_eq(table_append_row(table, r, "maps/any.tsv", 4), 0);
+
+    lang_map_list_t maps;
+    lang_map_list_init(&maps);
+    ck_assert_int_ne(build_maps_from_entries(&opt, table, &maps), 0);
+
+    lang_map_list_free(&maps);
+    row_free(r);
+    table_free(table);
+}
+END_TEST
+
+START_TEST(test_build_maps_from_entries_langs_option_count_mismatch) {
+    options_t opt = {0};
+    opt.langs = "zh_CN,ja";
+    table_t *table = table_new();
+    ck_assert_ptr_nonnull(table);
+    row_t *r = row_parse("hello\tworld");
+    ck_assert_ptr_nonnull(r);
+    ck_assert_int_eq(table_append_row(table, r, "maps/any.tsv", 1), 0);
 
     lang_map_list_t maps;
     lang_map_list_init(&maps);
@@ -191,11 +299,17 @@ static Suite *poedit_unit_suite(void) {
 
     tcase_add_test(tc_core, test_resolve_target_file_lang_by_filename);
     tcase_add_test(tc_core, test_resolve_target_file_lang_with_override);
+    tcase_add_test(tc_core, test_resolve_target_file_lang_ignores_multi_langs);
     tcase_add_test(tc_core, test_resolve_fallback_lang_prefers_subdir);
     tcase_add_test(tc_core, test_resolve_fallback_lang_uses_filename);
+    tcase_add_test(tc_core, test_lang_list_parse_trims_and_splits);
     tcase_add_test(tc_core, test_build_maps_from_entries_rejects_missing_explicit_lang);
     tcase_add_test(tc_core, test_build_maps_from_entries_accepts_explicit_lang_and_updates_map);
+    tcase_add_test(tc_core, test_build_maps_from_entries_multi_langs_inline);
+    tcase_add_test(tc_core, test_build_maps_from_entries_multi_langs_option);
+    tcase_add_test(tc_core, test_build_maps_from_entries_langs_option_allows_msgid_only_rows);
     tcase_add_test(tc_core, test_build_maps_from_entries_invalid_column_count);
+    tcase_add_test(tc_core, test_build_maps_from_entries_langs_option_count_mismatch);
     tcase_add_test(tc_core, test_analyze_inputs_nonexistent_file_returns_error);
     tcase_add_test(tc_core, test_analyze_inputs_directory_merges_multiple_files);
     tcase_add_test(tc_core, test_analyze_inputs_directory_invalid_file_fails);

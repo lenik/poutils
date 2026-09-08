@@ -24,19 +24,29 @@ poedit \- นําแมป gettext \fBmsgid\fP/\fBmsgstr\fP ไปยัง \f
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 แต่ละบรรทัดที่ไม่ว่างจะแยกด้วยอักขระแท็บ (แท็บแนวนอน, Unicode \fBU+0009\fP หรือ ASCII\ 0x09) ไม่ใช่ช่องว่าง.
-ใช้แท็บคั่นฟิลด์; อนุญาตอีสเคปแบบ C มี 3 คอลัมน์ (lang, \fBmsgid\fP, \fBmsgstr\fP)
-หรือ 2 คอลัมน์ หาภาษาได้ด้วย
-.BR \-l
-, พาธ, ฯลฯ
-ตาม
+อนุญาตอีสเคปแบบ C มีสองรูปแบบ:
+.I langs
+(รหัสภาษาคั่นด้วยจุลภาค),
+.BR msgid
+และ
+.B msgstr
+หนึ่งคอลัมน์ต่อภาษา หรือไม่มีคอลัมน์
+.I langs
+โดยใช้
+.BR \-l " " \-\-langs
+หรือพาธ จำนวนคอลัมน์
+.B msgstr
+ต้องเท่ากับจำนวนภาษา ดู
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
 .BR \-i " " \fIพาไฟล์\fP ", " \-\-input=\fIพาไฟล์
 อ่านไฟล์/โฟลเดอร์ หรือ stdin
 .TP
-.BR \-l " " \fIlang\fP ", " \-\-lang=\fIlang
-รหัสภาษา
+.BR \-l " " \fIlangs\fP ", " \-\-langs=\fIlangs
+รหัสภาษาคั่นด้วยจุลภาค เมื่อไม่มีคอลัมน์ langs; จำนวน
+.B msgstr
+ต้องตรงกัน
 .TP
 .BR \-p " " \fIไดเรกทอรี\fP ", " \-\-po\-dir=\fIไดเรกทอรี
 ราก \fB.po\fP เริ่ม (ค่าเริ่ม \fBpo\fP)

@@ -2,194 +2,203 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poedit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-24 23:01+0800\n"
+"POT-Creation-Date: 2026-09-08 13:52+0800\n"
 "Language: eo\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/poedit.c:204
+#: src/poedit.c:295
 msgid "Purpose:"
 msgstr "Celo:"
 
-#: src/poedit.c:205
+#: src/poedit.c:296
 msgid "  Efficiently apply many already-translated l10n messages into PO files."
 msgstr "  Efike apliki multajn jam tradukitajn l10n-mesagxojn en PO-dosierojn."
 
-#: src/poedit.c:206
+#: src/poedit.c:297
 msgid "  poedit is usually used to supplement translations by providing only newly added entries."
 msgstr "  poedit kutime aldonas al tradukoj per provizi nur nove aldonitajn erojn."
 
-#: src/poedit.c:208
+#: src/poedit.c:299
 msgid "  This tool is mainly designed for AI-assisted coding workflows."
 msgstr "  Cxi tiu ilo estas cxefe desegnita por AI-helpataj programadaj laborfluoj."
 
-#: src/poedit.c:210
+#: src/poedit.c:301
 msgid "AI usage requirements:"
 msgstr "Postuloj por AI-uzo:"
 
-#: src/poedit.c:212
+#: src/poedit.c:303
 msgid "  1) Translate multiple messages in advance (manually) before running poedit."
 msgstr "  1) Traduku plurajn mesagxojn antauxe (mane) antaux rulado de poedit."
 
-#: src/poedit.c:213
+#: src/poedit.c:304
 msgid "  2) Use poedit for batch update to avoid one-by-one tool calls."
 msgstr "  2) Uzu poedit por amasa gxisdatigo por eviti unuopajn ilvokojn."
 
-#: src/poedit.c:214
+#: src/poedit.c:305
 msgid "  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
 msgstr "  3) NE uzu poedit por krei anstatauxigilojn aux kopii msgid al msgstr."
 
-#: src/poedit.c:215
+#: src/poedit.c:306
 msgid "     Doing so defeats the purpose of this tool."
 msgstr "     Tio nuligas la celon de cxi tiu ilo."
 
-#: src/poedit.c:216
+#: src/poedit.c:307
 msgid "  4) AI must first identify missing entries in current translations, "
 msgstr "  4) AI unue identigu mankantajn erojn en la nunaj tradukoj,"
 
-#: src/poedit.c:217
+#: src/poedit.c:308
 msgid "     translate them manually."
 msgstr "     traduku ilin permane."
 
-#: src/poedit.c:218
+#: src/poedit.c:309
 msgid "     then apply to PO files with this tool in one batch."
 msgstr "     poste apliku ilin al PO-dosieroj per ĉi tiu ilo en unu fojo."
 
-#: src/poedit.c:222
+#: src/poedit.c:313
 msgid "Usage: poedit [OPTIONS]"
 msgstr "Uzo: poedit [OPCIOJ]"
 
-#: src/poedit.c:225
-msgid "Input format: (lang can be inferred from filename or subdir)"
-msgstr "Eniga formo: (lingvo eblas indukti el dosiernomo aŭ subdosierujo)"
+#: src/poedit.c:316
+msgid "Input format: (langs can be inferred from --langs, filename or subdir)"
+msgstr "Eniga formato: (lingvoj inferendas el --langs, dosiernomo aŭ subdosierujo)"
 
-#: src/poedit.c:226
-msgid "  lang<TAB>msgid<TAB>msgstr"
-msgstr "  lang<TAB>msgid<TAB>msgstr"
+#: src/poedit.c:317
+msgid "  langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
+msgstr "  langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
 
-#: src/poedit.c:227
+#: src/poedit.c:318
 msgid "-or-"
 msgstr "-aŭ-"
 
-#: src/poedit.c:228
-msgid "  msgid<TAB>msgstr"
-msgstr "  msgid<TAB>msgstr"
+#: src/poedit.c:319
+msgid "  msgid<TAB>msgstr[<TAB>msgstr...]"
+msgstr "  msgid<TAB>msgstr[<TAB>msgstr...]"
 
-#: src/poedit.c:230
-msgid "  lang conflict resolution: [lang<TAB>] > [filename] > [subdir]"
-msgstr "  lingva konflikta prioritato: [lang<TAB>] > [dosiernomo] > [subdosierujo]"
+#: src/poedit.c:321
+msgid "  langs: comma-separated language codes; one msgstr column per lang."
+msgstr "  langs: lingvo-kodoj disigitaj per komoj; unu msgstr-kolumno por lingvo."
 
-#: src/poedit.c:232
+#: src/poedit.c:322
+msgid "  langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"
+msgstr "  solvo de lingvo-konfliktoj: [langs<TAB>] > [--langs] > [filename] > [subdir]"
+
+#: src/poedit.c:324
 msgid "Options:"
 msgstr "Opcioj:"
 
-#: src/poedit.c:234
+#: src/poedit.c:326
 msgid "mapping file or directory (optional: default stdin)"
 msgstr "mapa dosiero aux dosierujo (nedeviga; defauxlte stdin)"
 
-#: src/poedit.c:236
-msgid "language code for single mapping file"
-msgstr "lingvokodo por unuopa mapa dosiero"
+#: src/poedit.c:328
+msgid "comma-separated language codes for mapping rows without langs column"
+msgstr "lingvo-kodoj disigitaj per komoj por mapaj linioj sen langs-kolumno"
 
-#: src/poedit.c:238
+#: src/poedit.c:330
 msgid "PO directory (default: po)"
 msgstr "PO-dosierujo (defauxlte: po)"
 
-#: src/poedit.c:240
+#: src/poedit.c:332
 msgid "show plan but do not modify files"
 msgstr "montru planon sed ne modifu dosierojn"
 
-#: src/poedit.c:242
+#: src/poedit.c:334
 msgid "repeat for more verbose loggings"
 msgstr "ripetu por pli detalaj protokoloj"
 
-#: src/poedit.c:244
+#: src/poedit.c:336
 msgid "show less logging messages"
 msgstr "montru malpli da protokolaj mesagxoj"
 
-#: src/poedit.c:246
+#: src/poedit.c:338
 msgid "show this help and exit"
 msgstr "montru cxi tiun helpon kaj eliru"
 
-#: src/poedit.c:248
+#: src/poedit.c:340
 msgid "show version and exit"
 msgstr "montru version kaj eliru"
 
-#: src/poedit.c:317
+#: src/poedit.c:409
 #, c-format
 msgid "error: input not found: %s\n"
 msgstr "eraro: enigo ne trovita: %s\n"
 
-#: src/poedit.c:323
+#: src/poedit.c:415
 #, c-format
 msgid "error: failed to read mapping file: %s\n"
 msgstr "eraro: malsukcesis legi mapan dosieron: %s\n"
 
-#: src/poedit.c:337
+#: src/poedit.c:429
 #, c-format
 msgid "error: unsupported input type: %s\n"
 msgstr "eraro: nesubtenata enigtipo: %s\n"
 
-#: src/poedit.c:343
+#: src/poedit.c:435
 #, c-format
 msgid "error: failed to open input directory: %s\n"
 msgstr "eraro: malsukcesis malfermi enig-dosierujon: %s\n"
 
-#: src/poedit.c:405
+#: src/poedit.c:538
 msgid "error: input contains only msgid<TAB>msgstr entries; explicit language is required."
 msgstr "eraro: enigo enhavas nur msgid<TAB>msgstr-erojn; eksplicita lingvo estas bezonata."
 
-#: src/poedit.c:407
-msgid "Please use [lang<TAB>]msgid<TAB>msgstr format."
-msgstr "Bonvolu uzi la formaton [lang<TAB>]msgid<TAB>msgstr."
+#: src/poedit.c:540
+msgid "Please use [langs<TAB>]msgid<TAB>msgstr... or --langs."
+msgstr "Bonvolu uzi [langs<TAB>]msgid<TAB>msgstr... aŭ --langs."
 
-#: src/poedit.c:416
+#: src/poedit.c:551 src/poedit.c:626
 #, c-format
 msgid "error: invalid field count in %s:%d\n"
 msgstr "eraro: nevalida kampnombro en %s:%d\n"
 
-#: src/poedit.c:425
+#: src/poedit.c:570 src/poedit.c:581 src/poedit.c:594
+#, c-format
+msgid "error: langs/msgstr count mismatch in %s:%d (langs=%zu, fields=%zu)\n"
+msgstr "eraro: nombro de langs/msgstr ne kongruas en %s:%d (langs=%zu, fields=%zu)\n"
+
+#: src/poedit.c:605 src/poedit.c:617
 #, c-format
 msgid "error: no language resolved for %s:%d\n"
 msgstr "eraro: neniu lingvo trovita por %s:%d\n"
 
-#: src/poedit.c:458
+#: src/poedit.c:652
 #, c-format
 msgid "[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "[dry-run] %s: %s (gxisdatigitaj=%d, fuzzy_forigitaj=%d)\n"
 
-#: src/poedit.c:459
+#: src/poedit.c:653
 msgid "would update"
 msgstr "gxisdatigus"
 
-#: src/poedit.c:459 src/poedit.c:462
+#: src/poedit.c:653 src/poedit.c:656
 msgid "no changes"
 msgstr "neniuj sxangxoj"
 
-#: src/poedit.c:461
+#: src/poedit.c:655
 #, c-format
 msgid "%s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "%s: %s (gxisdatigitaj=%d, fuzzy_forigitaj=%d)\n"
 
-#: src/poedit.c:462
+#: src/poedit.c:656
 msgid "updated"
 msgstr "gxisdatigita"
 
-#: src/poedit.c:483
+#: src/poedit.c:677
 #, c-format
 msgid "warn: skip missing PO file: %s\n"
 msgstr "averto: preterlasas mankantan PO-dosieron: %s\n"
 
-#: src/poedit.c:496
+#: src/poedit.c:690
 #, c-format
 msgid "error: cannot infer language from target file: %s\n"
 msgstr "eraro: ne eblas dedukti lingvon el cel-dosiero: %s\n"
 
-#: src/poedit.c:502
+#: src/poedit.c:696
 #, c-format
 msgid "warn: no mapping found for language %s; skip %s\n"
 msgstr "averto: neniu mapo trovita por lingvo %s; preterlasas %s\n"
 
-#: src/poedit.c:542
+#: src/poedit.c:736
 msgid "error: no mapping entries loaded"
 msgstr "eraro: neniuj mapaj eroj sxargxitaj"

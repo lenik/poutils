@@ -25,17 +25,27 @@ poedit \- 批次將 gettext \fBmsgid\fP/\fBmsgstr\fP 寫入 \fB.po\fP
 .BI poedit " \-\-help" .
 .SH "INPUT FORMAT"
 每個非空行以定位字元（水平 Tab，Unicode \fBU+0009\fP / ASCII\ 0x09）分隔，而不是空白字元。
-以定位字元分欄，欄位內可含類 C 脫字元。三欄：語系、\fBmsgid\fP、\fBmsgstr\fP，或兩欄而可由
-.BR \-l
-、路徑、目標推得語系。詳見
+欄位內可含類 C 脫字元。兩種版面：
+.I langs
+（逗號分隔的多語系）、
+.BR msgid
+、以及每語系一欄
+.BR msgstr
+；或不含
+.I langs
+欄，而由
+.BR \-l " " \-\-langs
+或路徑推得語系。
+.B msgstr
+欄數須與語系數一致。詳見
 .BI poedit " \-\-help" .
 .SH OPTIONS
 .TP
 .BR \-i " " \fI路徑\fP ", " \-\-input=\fI路徑
 單一檔或目錄；省略則讀取標準輸入。
 .TP
-.BR \-l " " \fI語系\fP ", " \-\-lang=\fI語系
-當行內沒有語欄位時的語系代碼。
+.BR \-l " " \fI語系列表\fP ", " \-\-langs=\fI語系列表
+逗號分隔的語系代碼，用於列內沒有 langs 欄時；\fBmsgstr\fP 欄數須相符。
 .TP
 .BR \-p " " \fI目錄\fP ", " \-\-po\-dir=\fI目錄
 預設 \fB.po\fP 根（預設: \fBpo\fP）。
