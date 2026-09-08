@@ -19,7 +19,14 @@ MINGW_CC := $(shell command -v x86_64-w64-mingw32-gcc 2>/dev/null)
 all:
 	"$(HOST_SH)" run $(KIND) -- $(MAKE) -C "$(CURDIR)" local
 
-local: $(ARTIFACT)
+# bas-c is not shipped as a MinGW package here; skip cleanly so zfr package
+# does not fail the whole release when only the cross toolchain is present.
+local:
+	@if ! x86_64-w64-mingw32-pkg-config --exists bas-c 2>/dev/null; then \
+		echo "mingw: skip (cross dependency bas-c not found)" >&2; \
+	else \
+		$(MAKE) "$(ARTIFACT)"; \
+	fi
 
 stage:
 	rm -rf "$(STAGE)" "$(BUILD)"
