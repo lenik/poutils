@@ -1,12 +1,10 @@
 poutils (1.1.2) testing; urgency=medium
 
-  * man: rewrite all localized poedit(1) as docs/<lang>/poedit.adoc;
-    drop groff man/.   * meson: build/install localized AsciiDoc mans;
-    zfr version + 0.0.0 fallback; single foreach.   * debian/rules: --
-    builddirectory=debian/build.   * poedit: restore help indentation
-    outside gettext; complete ar/es_MX catalogs; unfuzzy after space-
-    strip.   * Remove obsolete tools/gen_man_in.py (groff .in
-    generator).
+  * man: rewrite all localized poedit(1) as docs/<lang>/poedit.adoc; drop groff man/.
+  * meson: build/install localized AsciiDoc mans; zfr version + 0.0.0 fallback; single foreach.
+  * debian/rules: --builddirectory=debian/build.
+  * poedit: restore help indentation outside gettext; complete ar/es_MX catalogs; unfuzzy after space-strip.
+  * Remove obsolete tools/gen_man_in.py (groff .in generator).
 
  -- Lenik (谢继雷) <lenik@bodz.net>  Tue, 08 Sep 2026 14:18:11 +0800
 
