@@ -2,203 +2,203 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poedit\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-08 13:52+0800\n"
+"POT-Creation-Date: 2026-09-08 14:14+0800\n"
 "Language: ja\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/poedit.c:295
+#: src/poedit.c:305
 msgid "Purpose:"
 msgstr "目的:"
 
-#: src/poedit.c:296
-msgid "  Efficiently apply many already-translated l10n messages into PO files."
-msgstr "  既に翻訳済みの l10n メッセージを PO ファイルへ効率的に一括反映します。"
+#: src/poedit.c:306
+msgid "Efficiently apply many already-translated l10n messages into PO files."
+msgstr "既に翻訳済みの l10n メッセージを PO ファイルへ効率的に一括反映します。"
 
-#: src/poedit.c:297
-msgid "  poedit is usually used to supplement translations by providing only newly added entries."
-msgstr "  poedit は通常、新たに追加されたエントリだけを与えることで翻訳を補うために使われます。"
+#: src/poedit.c:307
+msgid "poedit is usually used to supplement translations by providing only newly added entries."
+msgstr "poedit は通常、新たに追加されたエントリだけを与えることで翻訳を補うために使われます。"
 
-#: src/poedit.c:299
-msgid "  This tool is mainly designed for AI-assisted coding workflows."
-msgstr "  このツールは主に AI 支援コーディングワークフロー向けに設計されています。"
+#: src/poedit.c:309
+msgid "This tool is mainly designed for AI-assisted coding workflows."
+msgstr "このツールは主に AI 支援コーディングワークフロー向けに設計されています。"
 
-#: src/poedit.c:301
+#: src/poedit.c:311
 msgid "AI usage requirements:"
 msgstr "AI 利用要件:"
 
-#: src/poedit.c:303
-msgid "  1) Translate multiple messages in advance (manually) before running poedit."
-msgstr "  1) poedit 実行前に複数メッセージを事前に手動翻訳してください。"
-
-#: src/poedit.c:304
-msgid "  2) Use poedit for batch update to avoid one-by-one tool calls."
-msgstr "  2) 1 件ずつのツール呼び出しを避けるため、poedit で一括更新してください。"
-
-#: src/poedit.c:305
-msgid "  3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
-msgstr "  3) プレースホルダー生成や msgid の msgstr へのコピーに poedit を使わないでください。"
-
-#: src/poedit.c:306
-msgid "     Doing so defeats the purpose of this tool."
-msgstr "     それはこのツールの目的を損ないます。"
-
-#: src/poedit.c:307
-msgid "  4) AI must first identify missing entries in current translations, "
-msgstr "  4) AI はまず現在の翻訳で不足している項目を特定し、"
-
-#: src/poedit.c:308
-msgid "     translate them manually."
-msgstr "     それらを手動で翻訳し、"
-
-#: src/poedit.c:309
-msgid "     then apply to PO files with this tool in one batch."
-msgstr "     その後このツールで PO ファイルに一括適用すること。"
-
 #: src/poedit.c:313
+msgid "1) Translate multiple messages in advance (manually) before running poedit."
+msgstr "1) poedit 実行前に複数メッセージを事前に手動翻訳してください。"
+
+#: src/poedit.c:314
+msgid "2) Use poedit for batch update to avoid one-by-one tool calls."
+msgstr "2) 1 件ずつのツール呼び出しを避けるため、poedit で一括更新してください。"
+
+#: src/poedit.c:315
+msgid "3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."
+msgstr "3) プレースホルダー生成や msgid の msgstr へのコピーに poedit を使わないでください。"
+
+#: src/poedit.c:316
+msgid "Doing so defeats the purpose of this tool."
+msgstr "それはこのツールの目的を損ないます。"
+
+#: src/poedit.c:317
+msgid "4) AI must first identify missing entries in current translations,"
+msgstr "4) AI はまず現在の翻訳で不足している項目を特定し、"
+
+#: src/poedit.c:318
+msgid "translate them manually."
+msgstr "それらを手動で翻訳し、"
+
+#: src/poedit.c:319
+msgid "then apply to PO files with this tool in one batch."
+msgstr "その後このツールで PO ファイルに一括適用すること。"
+
+#: src/poedit.c:323
 msgid "Usage: poedit [OPTIONS]"
 msgstr "使い方: poedit [OPTIONS]"
 
-#: src/poedit.c:316
+#: src/poedit.c:326
 msgid "Input format: (langs can be inferred from --langs, filename or subdir)"
 msgstr "入力形式:（言語は --langs、ファイル名、またはサブディレクトリから推定できます）"
 
-#: src/poedit.c:317
-msgid "  langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
-msgstr "  langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
+#: src/poedit.c:327
+msgid "langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
+msgstr "langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"
 
-#: src/poedit.c:318
+#: src/poedit.c:328
 msgid "-or-"
 msgstr "-または-"
 
-#: src/poedit.c:319
-msgid "  msgid<TAB>msgstr[<TAB>msgstr...]"
-msgstr "  msgid<TAB>msgstr[<TAB>msgstr...]"
+#: src/poedit.c:329
+msgid "msgid<TAB>msgstr[<TAB>msgstr...]"
+msgstr "msgid<TAB>msgstr[<TAB>msgstr...]"
 
-#: src/poedit.c:321
-msgid "  langs: comma-separated language codes; one msgstr column per lang."
-msgstr "  langs: カンマ区切りの言語コード。言語ごとに msgstr 列が1つ必要です。"
+#: src/poedit.c:331
+msgid "langs: comma-separated language codes; one msgstr column per lang."
+msgstr "langs: カンマ区切りの言語コード。言語ごとに msgstr 列が1つ必要です。"
 
-#: src/poedit.c:322
-msgid "  langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"
-msgstr "  言語競合の解決順: [langs<TAB>] > [--langs] > [filename] > [subdir]"
+#: src/poedit.c:333
+msgid "langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"
+msgstr "言語競合の解決順: [langs<TAB>] > [--langs] > [filename] > [subdir]"
 
-#: src/poedit.c:324
+#: src/poedit.c:335
 msgid "Options:"
 msgstr "オプション:"
 
-#: src/poedit.c:326
+#: src/poedit.c:337
 msgid "mapping file or directory (optional: default stdin)"
 msgstr "マッピングファイルまたはディレクトリ（任意、既定は stdin）"
 
-#: src/poedit.c:328
+#: src/poedit.c:339
 msgid "comma-separated language codes for mapping rows without langs column"
 msgstr "langs 列がないマッピング行向けのカンマ区切り言語コード"
 
-#: src/poedit.c:330
+#: src/poedit.c:341
 msgid "PO directory (default: po)"
 msgstr "PO ディレクトリ（既定: po）"
 
-#: src/poedit.c:332
+#: src/poedit.c:343
 msgid "show plan but do not modify files"
 msgstr "計画のみ表示し、ファイルは変更しない"
 
-#: src/poedit.c:334
+#: src/poedit.c:345
 msgid "repeat for more verbose loggings"
 msgstr "指定を繰り返すと詳細ログを表示"
 
-#: src/poedit.c:336
+#: src/poedit.c:347
 msgid "show less logging messages"
 msgstr "ログメッセージを少なく表示"
 
-#: src/poedit.c:338
+#: src/poedit.c:349
 msgid "show this help and exit"
 msgstr "このヘルプを表示して終了"
 
-#: src/poedit.c:340
+#: src/poedit.c:351
 msgid "show version and exit"
 msgstr "バージョンを表示して終了"
 
-#: src/poedit.c:409
+#: src/poedit.c:420
 #, c-format
 msgid "error: input not found: %s\n"
 msgstr "エラー: 入力が見つかりません: %s\n"
 
-#: src/poedit.c:415
+#: src/poedit.c:426
 #, c-format
 msgid "error: failed to read mapping file: %s\n"
 msgstr "エラー: マッピングファイルの読み込みに失敗しました: %s\n"
 
-#: src/poedit.c:429
+#: src/poedit.c:440
 #, c-format
 msgid "error: unsupported input type: %s\n"
 msgstr "エラー: サポートされていない入力タイプです: %s\n"
 
-#: src/poedit.c:435
+#: src/poedit.c:446
 #, c-format
 msgid "error: failed to open input directory: %s\n"
 msgstr "エラー: 入力ディレクトリを開けませんでした: %s\n"
 
-#: src/poedit.c:538
+#: src/poedit.c:549
 msgid "error: input contains only msgid<TAB>msgstr entries; explicit language is required."
 msgstr "エラー: 入力が msgid<TAB>msgstr のみです。明示的な言語指定が必要です。"
 
-#: src/poedit.c:540
+#: src/poedit.c:551
 msgid "Please use [langs<TAB>]msgid<TAB>msgstr... or --langs."
 msgstr "[langs<TAB>]msgid<TAB>msgstr... 形式か --langs を使用してください。"
 
-#: src/poedit.c:551 src/poedit.c:626
+#: src/poedit.c:562 src/poedit.c:637
 #, c-format
 msgid "error: invalid field count in %s:%d\n"
 msgstr "エラー: %s:%d のフィールド数が不正です\n"
 
-#: src/poedit.c:570 src/poedit.c:581 src/poedit.c:594
+#: src/poedit.c:581 src/poedit.c:592 src/poedit.c:605
 #, c-format
 msgid "error: langs/msgstr count mismatch in %s:%d (langs=%zu, fields=%zu)\n"
 msgstr "エラー: %s:%d の langs/msgstr 数が一致しません (langs=%zu, fields=%zu)\n"
 
-#: src/poedit.c:605 src/poedit.c:617
+#: src/poedit.c:616 src/poedit.c:628
 #, c-format
 msgid "error: no language resolved for %s:%d\n"
 msgstr "エラー: %s:%d の言語を解決できません\n"
 
-#: src/poedit.c:652
+#: src/poedit.c:663
 #, c-format
 msgid "[dry-run] %s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "[dry-run] %s: %s (更新=%d, fuzzy削除=%d)\n"
 
-#: src/poedit.c:653
+#: src/poedit.c:664
 msgid "would update"
 msgstr "更新予定"
 
-#: src/poedit.c:653 src/poedit.c:656
+#: src/poedit.c:664 src/poedit.c:667
 msgid "no changes"
 msgstr "変更なし"
 
-#: src/poedit.c:655
+#: src/poedit.c:666
 #, c-format
 msgid "%s: %s (updated=%d, fuzzy_removed=%d)\n"
 msgstr "%s: %s (更新=%d, fuzzy削除=%d)\n"
 
-#: src/poedit.c:656
+#: src/poedit.c:667
 msgid "updated"
 msgstr "更新済み"
 
-#: src/poedit.c:677
+#: src/poedit.c:688
 #, c-format
 msgid "warn: skip missing PO file: %s\n"
 msgstr "警告: 存在しない PO ファイルをスキップします: %s\n"
 
-#: src/poedit.c:690
+#: src/poedit.c:701
 #, c-format
 msgid "error: cannot infer language from target file: %s\n"
 msgstr "エラー: 対象ファイルから言語を推測できません: %s\n"
 
-#: src/poedit.c:696
+#: src/poedit.c:707
 #, c-format
 msgid "warn: no mapping found for language %s; skip %s\n"
 msgstr "警告: 言語 %s のマッピングがありません。%s をスキップします\n"
 
-#: src/poedit.c:736
+#: src/poedit.c:747
 msgid "error: no mapping entries loaded"
 msgstr "エラー: マッピングエントリが読み込まれていません"

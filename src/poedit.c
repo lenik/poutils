@@ -296,22 +296,27 @@ static const translation_map_t *find_lang_map(const lang_map_list_t *maps, const
     return NULL;
 }
 
+static void fprintln_indented(FILE *out, const char *s) {
+    fputs("  ", out);
+    fprintln(out, s);
+}
+
 static void print_design_purpose(FILE *out) {
     fprintln(out, _("Purpose:"));
-    fprintln(out, _("Efficiently apply many already-translated l10n messages into PO files."));
-    fprintln(out, _("poedit is usually used to supplement translations by providing only newly "
-                    "added entries."));
-    fprintln(out, _("This tool is mainly designed for AI-assisted coding workflows."));
+    fprintln_indented(out, _("Efficiently apply many already-translated l10n messages into PO files."));
+    fprintln_indented(out, _("poedit is usually used to supplement translations by providing only newly "
+                             "added entries."));
+    fprintln_indented(out, _("This tool is mainly designed for AI-assisted coding workflows."));
     fputc('\n', out);
     fprintln(out, _("AI usage requirements:"));
-    fprintln(out,
-             _("1) Translate multiple messages in advance (manually) before running poedit."));
-    fprintln(out, _("2) Use poedit for batch update to avoid one-by-one tool calls."));
-    fprintln(out, _("3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."));
-    fprintln(out, _("Doing so defeats the purpose of this tool."));
-    fprintln(out, _("4) AI must first identify missing entries in current translations,"));
-    fprintln(out, _("translate them manually."));
-    fprintln(out, _("then apply to PO files with this tool in one batch."));
+    fprintln_indented(out,
+                      _("1) Translate multiple messages in advance (manually) before running poedit."));
+    fprintln_indented(out, _("2) Use poedit for batch update to avoid one-by-one tool calls."));
+    fprintln_indented(out, _("3) Do NOT use poedit to generate placeholders or copy msgid to msgstr."));
+    fprintln_indented(out, _("Doing so defeats the purpose of this tool."));
+    fprintln_indented(out, _("4) AI must first identify missing entries in current translations,"));
+    fprintln_indented(out, _("translate them manually."));
+    fprintln_indented(out, _("then apply to PO files with this tool in one batch."));
 }
 
 void usage(FILE *out) {
@@ -319,12 +324,13 @@ void usage(FILE *out) {
     print_design_purpose(out);
     fputc('\n', out);
     fprintln(out, _("Input format: (langs can be inferred from --langs, filename or subdir)"));
-    fprintln(out, _("langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"));
+    fprintln_indented(out, _("langs<TAB>msgid<TAB>msgstr[<TAB>msgstr...]"));
     fprintln(out, _("-or-"));
-    fprintln(out, _("msgid<TAB>msgstr[<TAB>msgstr...]"));
+    fprintln_indented(out, _("msgid<TAB>msgstr[<TAB>msgstr...]"));
     fputc('\n', out);
-    fprintln(out, _("langs: comma-separated language codes; one msgstr column per lang."));
-    fprintln(out, _("langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"));
+    fprintln_indented(out, _("langs: comma-separated language codes; one msgstr column per lang."));
+    fprintln_indented(out,
+                      _("langs conflict resolution: [langs<TAB>] > [--langs] > [filename] > [subdir]"));
     fputc('\n', out);
     fprintln(out, _("Options:"));
     fputs("  -i, --input PATH      ", out);
