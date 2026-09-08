@@ -4,7 +4,19 @@ project(
     'cpp',
     version: run_command(
         'sh',
-        '-c', 'v=$(git describe --tags --always --dirty 2>/dev/null || true); v=${v#v}; [ -n "$v" ] && printf "%s" "$v" || printf "0.0.0"',
+        '-c', '''
+        v=$(
+            command -v zfr >/dev/null 2>&1 && zfr version 2>/dev/null || true
+        )
+        if [ -z "$v" ] && [ -f VERSION ]; then
+            v=$(head -n1 VERSION | tr -d '\r')
+            v=${v#v}
+        fi
+        if [ -z "$v" ]; then
+            v="0.0.0" # FIXED TO 0.0.0, DO NOT MODIFY
+        fi
+        printf '%s' "$v"
+        ''',
         check: false,
     ).stdout().strip(),
     license: 'AGPL-3.0-or-later',
@@ -169,18 +181,23 @@ install_data(
     install_dir: pkgdocdir,
 )
 
-config_man = configuration_data()
-config_man.set('PROJECT_VERSION', meson.project_version())
-config_man.set('PROJECT_AUTHOR', project_author)
-config_man.set('PROJECT_EMAIL', project_email)
-config_man.set('PROJECT_YEAR', project_year)
+asciidoctor = find_program('asciidoctor', required: true)
 
-# English man page is built from docs/poedit.adoc via asciidoctor (below).
-# Localized groff sources remain under man/<lang>/ until migrated to docs/<lang>/.
+man_adoc_attrs = [
+    '-a', 'project-version=' + meson.project_version(),
+    '-a', 'project-year=@0@'.format(project_year),
+    '-a', 'project-author=' + project_author,
+    '-a', 'project-email=' + project_email,
+]
 
+man_puffs = [
+    'poedit',
+]
 manpage_langs = [
+    'ar',
     'de',
     'eo',
+    'es_MX',
     'fr',
     'it',
     'ja',
@@ -190,20 +207,49 @@ manpage_langs = [
     'zh_CN',
     'zh_TW',
 ]
-foreach lang : manpage_langs
-    manin = 'man' / lang / 'poedit.1.in'
-    if fs.is_file(meson.current_source_dir() / manin)
-        man_gen = configure_file(
-            input: manin,
-            output: 'poedit.1.' + lang,
-            configuration: config_man,
-        )
-        install_data(
-            man_gen,
-            install_dir: mandir / lang / 'man1',
-            rename: 'poedit.1',
-        )
-    endif
+foreach puff : man_puffs
+    custom_target(
+        puff + '-man',
+        input: 'docs' / (puff + '.adoc'),
+        output: puff + '.1',
+        command: [
+            asciidoctor,
+            '-b', 'manpage',
+        ] + man_adoc_attrs + [
+            '-o', '@OUTPUT@',
+            '@INPUT@',
+        ],
+        build_by_default: true,
+        install: true,
+        install_dir: mandir / 'man1',
+    )
+    foreach lang : manpage_langs
+        adoc = 'docs' / lang / (puff + '.adoc')
+        if fs.is_file(meson.current_source_dir() / adoc)
+            man_out = custom_target(
+                puff + '-man-' + lang,
+                input: adoc,
+                output: puff + '.1.' + lang,
+                command: [
+                    asciidoctor,
+                    '-b', 'manpage',
+                ] + man_adoc_attrs + [
+                    '-o', '@OUTPUT@',
+                    '@INPUT@',
+                ],
+                build_by_default: true,
+                install: false,
+            )
+            meson.add_install_script(
+                'sh',
+                '-c',
+                'install -D -m644 "$1" "${MESON_INSTALL_DESTDIR_PREFIX}/$2/poedit.1"',
+                '_',
+                man_out,
+                get_option('mandir') / lang / 'man1',
+            )
+        endif
+    endforeach
 endforeach
 
 # look task: list what installed files looks like
@@ -295,28 +341,3 @@ run_target(
         '''.format(get_option('prefix'), datadir, mandir),
     ],
 )
-asciidoctor = find_program('asciidoctor', required: true)
-
-man_puffs = [
-    'poedit',
-]
-foreach puff : man_puffs
-  custom_target(
-    puff + '-man',
-    input: 'docs' / (puff + '.adoc'),
-    output: puff + '.1',
-    command: [
-      asciidoctor,
-      '-b', 'manpage',
-      '-a', 'project-version=' + meson.project_version(),
-      '-a', 'project-year=@0@'.format(project_year),
-      '-a', 'project-author=' + project_author,
-      '-a', 'project-email=' + project_email,
-      '-o', '@OUTPUT@',
-      '@INPUT@',
-    ],
-    build_by_default: true,
-    install: true,
-    install_dir: mandir / 'man1',
-  )
-endforeach

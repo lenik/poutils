@@ -2,84 +2,65 @@
 Lenik <poutils@bodz.net>
 v{project-version}, {project-year}
 :doctype: manpage
-:manmanual: User Commands
+:manmanual: 사용자 명령
 :mansource: poutils
 :man-linkstyle: blue R <>
 :nofooter:
 
 == Name
 
-poedit - batch apply gettext *msgid*/*msgstr* mappings into *.po* files
+poedit - gettext *msgid*/*msgstr* 매핑을 *.po* 파일에 반영
 
 == Synopsis
 
-*poedit* [_options_] [_po-file_]...
+*poedit* [옵션] [po-파일]...
 
 == Description
 
-*poedit* reads UTF-8, tab-separated mapping data and merges translated strings
-(*msgstr*) for known *msgid* values into one or more GNU gettext *.po* files,
-grouped by language. Prepare translations first, then use *poedit* to update
-catalogs in a single run; it is not a substitute for human or other translation
-of the source strings themselves.
+*poedit* 는 UTF-8, 탭으로 구분된 매핑을 읽고 언어별 GNU gettext *.po* 에
+*msgstr* 을 병합한다. 먼저 번역을 준비한 뒤 한 번에 적용하는 용도이며, *msgid* 만으로
+*msgstr* 을 흉내 내지는 않는다.
 
-By default, target files are _po-dir_/_lang_.po for each _lang_ in the input when
-that file is present. If _po-file_ arguments are given, only those files are
-written, and _lang_ is usually inferred from the path (for example, `.../ja.po`
-for Japanese). The built-in *--help* text explains a reasonable workflow,
-including for AI assistance.
+인자 없이 실행하면 입력에 나타난 언어에 대해 _po-dir_/_언어_.po 를 갱신(파일이 있을 때).
+_po-파일_ 을 주면 그 파일만. 언어 판정은 `poedit --help` 참고.
 
 == Input format
 
-Each non-empty line is split on *tab* (horizontal tab, Unicode *U+0009* and
-ASCII 0x09), not on space characters. Within each field, C-style backslash
-escapes are allowed, as in C string literals, so that embedded newlines, tabs,
-and quotes can be written without breaking the TSV line layout.
+비어 있지 않은 각 줄은 공백이 아니라 탭 문자(가로 탭, Unicode *U+0009* / ASCII 0x09)로 구분됩니다.
+C 스타일 이스케이프 가능. 두 가지 형식:
 
-The following layouts are supported:
+1. *langs 열 있음:* _langs_(쉼표로 구분된 언어 코드), *msgid*, 언어별 *msgstr* 열.
+2. *langs 열 없음:* *msgid* 와 여러 *msgstr*. 언어는 *-l* */* *--langs* 나 경로로 결정.
 
-1. *With langs column:* _langs_, then *msgid*, then one *msgstr* per language,
-   in that order, with *tab* characters between the fields. _langs_ is a
-   comma-separated list of Gettext language tags (e.g. *de*, *zh_CN,ja*) and
-   the number of *msgstr* fields must equal the number of language codes.
-
-2. *Without langs column:* *msgid* followed by one *msgstr* per language, when
-   a separate _langs_ column is not present. The target languages then come from
-   *-l* */* *--langs* (comma-separated), or, when that option names a single
-   language or is omitted, from the *-i* path and the _po-file_ target name,
-   depending on the invocation. That order matches the language-resolution rules
-   printed by `poedit --help`.
+*msgstr* 열 수는 언어 수와 같아야 합니다. 자세한 우선순위는 `poedit --help`.
 
 == Options
 
-*-i* _path_, *--input*=_path_::
-  Read from a file or a directory. If this option is omitted, read the standard
-  input.
+*-i* _경로_, *--input*=_경로_::
+  파일 또는 디렉터리. 생략 시 표준 입력.
 
-*-l* _langs_, *--langs*=_langs_::
-  Comma-separated language codes for rows that do not start with a _langs_
-  column. The number of *msgstr* columns on each such row must match the number
-  of codes.
+*-l* _언어목록_, *--langs*=_언어목록_::
+  쉼표로 구분된 언어 코드(행에 langs 열이 없을 때). *msgstr* 열 수는 일치해야 함.
 
-*-p* _dir_, *--po-dir*=_dir_::
-  Base directory for default *po* paths (default: *po* in the current design).
+*-p* _디렉터리_, *--po-dir*=_디렉터리_::
+  기본 *.po* 루트(기본값 *po*).
 
 *-d*, *--dry-run*::
-  Show the update plan; do not modify files.
+  쓰지 않고 계획만 표시.
 
 *-v*, *--verbose*::
-  Increase verbosity.
+  자세한 로그.
 
 *-q*, *--quiet*::
-  Reduce log output.
+  로그 감소.
 
 *-h*, *--help*::
-  Print a usage message and exit successfully.
+  도움말 후 성공 종료.
 
 *--version*::
-  Print *poedit* version and exit successfully.
+  버전 후 성공 종료.
 
-Further operands are _po-file_ paths to update directly.
+나머지 인수는 갱신할 _po-경로_.
 
 == Exit status
 
@@ -92,8 +73,7 @@ Further operands are _po-file_ paths to update directly.
 == Environment
 
 *LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
-  Select the language of `poedit --help` and related diagnostics where gettext
-  catalogs are installed. They do not change mapping or *.po* file contents.
+  `poedit --help` 등 gettext UI 언어를 고릅니다. 매핑이나 *.po* 본문은 바꾸지 않습니다.
 
 == See also
 
@@ -101,7 +81,7 @@ Further operands are _po-file_ paths to update directly.
 
 == Author
 
-Written by {project-author} <{project-email}>.
+{project-author} <{project-email}> 작성.
 
 == Copyright
 

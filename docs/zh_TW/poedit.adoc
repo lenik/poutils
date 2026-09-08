@@ -1,0 +1,95 @@
+= poedit(1)
+Lenik <poutils@bodz.net>
+v{project-version}, {project-year}
+:doctype: manpage
+:manmanual: 使用者命令
+:mansource: poutils
+:man-linkstyle: blue R <>
+:nofooter:
+
+== Name
+
+poedit - 批次將 gettext *msgid*/*msgstr* 寫入 *.po*
+
+== Synopsis
+
+*poedit* [選項] [po-檔案]...
+
+== Description
+
+*poedit* 讀入 UTF-8、以定位字元分欄的映射，把各語言的 *msgstr* 合併進 GNU gettext
+*.po* 檔。先備妥譯文再一次套用，而非僅從 *msgid* 產生 *msgstr*。
+
+未附 _po-檔案_ 時，針對輸入中出現的語言更新 _po-目錄_/_語系_.po（若檔案存在）。
+指定 _po-檔案_ 則只改這些。語系解析先後請見 `poedit --help`。
+
+== Input format
+
+每個非空行以定位字元（水平 Tab，Unicode *U+0009* / ASCII 0x09）分隔，而不是空白字元。
+欄位內可含類 C 脫字元。兩種版面：
+
+1. *含 langs 欄：* _langs_（逗號分隔的多語系）、*msgid*、以及每語系一欄 *msgstr*。
+2. *不含 langs 欄：* *msgid* 加多個 *msgstr*，語系由 *-l* */* *--langs* 或路徑推得。
+
+*msgstr* 欄數須與語系數一致。詳見 `poedit --help`。
+
+== Options
+
+*-i* _路徑_, *--input*=_路徑_::
+  單一檔或目錄；省略則讀取標準輸入。
+
+*-l* _語系列表_, *--langs*=_語系列表_::
+  逗號分隔的語系代碼，用於列內沒有 langs 欄時；*msgstr* 欄數須相符。
+
+*-p* _目錄_, *--po-dir*=_目錄_::
+  預設 *.po* 根（預設: *po*）。
+
+*-d*, *--dry-run*::
+  只顯示預定變更，不寫入。
+
+*-v*, *--verbose*::
+  更詳細日誌。
+
+*-q*, *--quiet*::
+  更少輸出。
+
+*-h*, *--help*::
+  列印用法並以狀態 0 結束。
+
+*--version*::
+  列印版本並以狀態 0 結束。
+
+其餘操作數為要更新的 _po-路徑_。
+
+== Exit status
+
+*0*::
+  Success.
+
+*1*::
+  Error.
+
+== Environment
+
+*LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
+  影響 `poedit --help` 等 gettext 介面語言，不改動對應列或 *.po* 正文字面內容。
+
+== See also
+
+*xgettext*(1), *msgmerge*(1), *msgfmt*(1), *gettext*(1)
+
+== Author
+
+由 {project-author} <{project-email}> 撰寫。
+
+== Copyright
+
+Copyright (C) {project-year}.
+License AGPL-3.0-or-later.
+This is free software: you are free to change and redistribute it under the
+terms of the GNU Affero General Public License.
+There is NO WARRANTY, to the extent permitted by law.
+See the LICENSE file in the source distribution for the full license text,
+including supplemental terms stating this project opposes AI exploitation and
+AI hegemony, and rejects mindless MIT-style licensing and politically naive
+BSD-style licensing.

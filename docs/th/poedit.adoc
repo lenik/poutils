@@ -1,0 +1,95 @@
+= poedit(1)
+Lenik <poutils@bodz.net>
+v{project-version}, {project-year}
+:doctype: manpage
+:manmanual: คำสั่งผู้ใช้
+:mansource: poutils
+:man-linkstyle: blue R <>
+:nofooter:
+
+== Name
+
+poedit - นำแมป gettext *msgid*/*msgstr* ไปยัง *.po*
+
+== Synopsis
+
+*poedit* [ตัวเลือก] [ไฟล์-po]...
+
+== Description
+
+*poedit* อ่านแถว UTF-8 คั่นด้วยแท็บ รวม *msgstr* ลงแคตตาล็อก *.po* ตามภาษา
+ใช้หลังเตรียมคำแปลเอง ไม่ออกแบบมาเพื่อสร้าง *msgstr* จาก *msgid* เพียงอย่างเดียว
+
+หากไม่ใส่ _ไฟล์-po_ จะอัปเดต _po-dir_/_ภาษา_.po ตามปรากฏในขาเข้า (ถ้ามีไฟล์)
+หากใส่พาไฟล์เฉพาะจะอัปเดตนั้นๆ เรื่องลำดับการคาดเดาภาษา ดู `poedit --help`
+
+== Input format
+
+แต่ละบรรทัดที่ไม่ว่างจะแยกด้วยอักขระแท็บ (แท็บแนวนอน, Unicode *U+0009* หรือ ASCII 0x09) ไม่ใช่ช่องว่าง
+อนุญาตอีสเคปแบบ C มีสองรูปแบบ:
+
+1. *มีคอลัมน์ langs:* _langs_ (รหัสภาษาคั่นด้วยจุลภาค), *msgid* และ *msgstr* หนึ่งคอลัมน์ต่อภาษา
+2. *ไม่มีคอลัมน์ langs:* *msgid* และ *msgstr*; ภาษาจาก *-l* */* *--langs* หรือพาธ
+
+จำนวนคอลัมน์ *msgstr* ต้องเท่ากับจำนวนภาษา ดู `poedit --help`
+
+== Options
+
+*-i* _พาไฟล์_, *--input*=_พาไฟล์_::
+  อ่านไฟล์/โฟลเดอร์ หรือ stdin
+
+*-l* _langs_, *--langs*=_langs_::
+  รหัสภาษาคั่นด้วยจุลภาค เมื่อไม่มีคอลัมน์ langs; จำนวน *msgstr* ต้องตรงกัน
+
+*-p* _ไดเรกทอรี_, *--po-dir*=_ไดเรกทอรี_::
+  ราก *.po* เริ่ม (ค่าเริ่ม *po*)
+
+*-d*, *--dry-run*::
+  เฉยๆ ดู
+
+*-v*, *--verbose*::
+  ละเอียดขึ้น
+
+*-q*, *--quiet*::
+  น้อยลง
+
+*-h*, *--help*::
+  แสดงความช่วยเหลือแล้วจบสำเร็จ
+
+*--version*::
+  แสดงรุ่นแล้วจบสำเร็จ
+
+ตัวถูกดำเนินการที่เหลือคือ _พาธ po_ ที่จะอัปเดต
+
+== Exit status
+
+*0*::
+  Success.
+
+*1*::
+  Error.
+
+== Environment
+
+*LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
+  เลือกภาษาของ `poedit --help` และการวินิจฉัยที่เกี่ยวข้อง ไม่เปลี่ยนเนื้อหาแมปหรือ *.po*
+
+== See also
+
+*xgettext*(1), *msgmerge*(1), *msgfmt*(1), *gettext*(1)
+
+== Author
+
+เขียนโดย {project-author} <{project-email}>
+
+== Copyright
+
+Copyright (C) {project-year}.
+License AGPL-3.0-or-later.
+This is free software: you are free to change and redistribute it under the
+terms of the GNU Affero General Public License.
+There is NO WARRANTY, to the extent permitted by law.
+See the LICENSE file in the source distribution for the full license text,
+including supplemental terms stating this project opposes AI exploitation and
+AI hegemony, and rejects mindless MIT-style licensing and politically naive
+BSD-style licensing.

@@ -2,84 +2,66 @@
 Lenik <poutils@bodz.net>
 v{project-version}, {project-year}
 :doctype: manpage
-:manmanual: User Commands
+:manmanual: Commandes utilisateur
 :mansource: poutils
 :man-linkstyle: blue R <>
 :nofooter:
 
 == Name
 
-poedit - batch apply gettext *msgid*/*msgstr* mappings into *.po* files
+poedit - appliquer des mappages gettext à des fichiers *.po*
 
 == Synopsis
 
-*poedit* [_options_] [_po-file_]...
+*poedit* [options] [fichier-po]...
 
 == Description
 
-*poedit* reads UTF-8, tab-separated mapping data and merges translated strings
-(*msgstr*) for known *msgid* values into one or more GNU gettext *.po* files,
-grouped by language. Prepare translations first, then use *poedit* to update
-catalogs in a single run; it is not a substitute for human or other translation
-of the source strings themselves.
+*poedit* lit des lignes mappage UTF-8 (tabulations) contenant *msgid* et *msgstr*
+et intègre les *msgstr* dans des catalogues *.po* GNU par langue. Préparez d'abord
+les textes, puis lancez un passage unique ; le programme ne génère pas de *msgstr*
+à partir du seul *msgid*.
 
-By default, target files are _po-dir_/_lang_.po for each _lang_ in the input when
-that file is present. If _po-file_ arguments are given, only those files are
-written, and _lang_ is usually inferred from the path (for example, `.../ja.po`
-for Japanese). The built-in *--help* text explains a reasonable workflow,
-including for AI assistance.
+Sans arguments _fichier-po_, il met à jour _po-dir_/_langue_.po si le fichier est
+présent. Avec des chemins, seuls ceux-là. Résolution: voir `poedit --help`.
 
 == Input format
 
-Each non-empty line is split on *tab* (horizontal tab, Unicode *U+0009* and
-ASCII 0x09), not on space characters. Within each field, C-style backslash
-escapes are allowed, as in C string literals, so that embedded newlines, tabs,
-and quotes can be written without breaking the TSV line layout.
+Chaque ligne non vide est séparée sur des tabulations (tabulation horizontale, Unicode *U+0009* ou ASCII 0x09), et non sur des espaces.
+Échappements de style C possibles. Deux dispositions :
 
-The following layouts are supported:
+1. *Avec colonne langs :* _langs_ (codes séparés par des virgules), *msgid*, puis une colonne *msgstr* par langue.
+2. *Sans colonne langs :* *msgid* et *msgstr* ; langues fournies par *-l* */* *--langs* ou le chemin.
 
-1. *With langs column:* _langs_, then *msgid*, then one *msgstr* per language,
-   in that order, with *tab* characters between the fields. _langs_ is a
-   comma-separated list of Gettext language tags (e.g. *de*, *zh_CN,ja*) and
-   the number of *msgstr* fields must equal the number of language codes.
-
-2. *Without langs column:* *msgid* followed by one *msgstr* per language, when
-   a separate _langs_ column is not present. The target languages then come from
-   *-l* */* *--langs* (comma-separated), or, when that option names a single
-   language or is omitted, from the *-i* path and the _po-file_ target name,
-   depending on the invocation. That order matches the language-resolution rules
-   printed by `poedit --help`.
+Le nombre de colonnes *msgstr* doit égaler le nombre de langues ; cf. `poedit --help`.
 
 == Options
 
-*-i* _path_, *--input*=_path_::
-  Read from a file or a directory. If this option is omitted, read the standard
-  input.
+*-i* _chemin_, *--input*=_chemin_::
+  Fichier ou répertoire, sinon *stdin*.
 
 *-l* _langs_, *--langs*=_langs_::
-  Comma-separated language codes for rows that do not start with a _langs_
-  column. The number of *msgstr* columns on each such row must match the number
-  of codes.
+  Codes de langue séparés par des virgules si la ligne n'a pas de colonne _langs_ ; le nombre de colonnes *msgstr* doit correspondre.
 
 *-p* _dir_, *--po-dir*=_dir_::
-  Base directory for default *po* paths (default: *po* in the current design).
+  Base (défaut: *po*).
 
 *-d*, *--dry-run*::
-  Show the update plan; do not modify files.
+  Afficher le plan sans modifier les fichiers.
 
 *-v*, *--verbose*::
-  Increase verbosity.
+  Plus de messages.
 
 *-q*, *--quiet*::
-  Reduce log output.
+  Moins de messages.
 
 *-h*, *--help*::
-  Print a usage message and exit successfully.
+  Afficher l'aide et quitter avec succès.
 
 *--version*::
-  Print *poedit* version and exit successfully.
+  Afficher la version et quitter avec succès.
 
-Further operands are _po-file_ paths to update directly.
+Les opérandes suivants sont des _chemins po_ à mettre à jour.
 
 == Exit status
 
@@ -92,8 +74,7 @@ Further operands are _po-file_ paths to update directly.
 == Environment
 
 *LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
-  Select the language of `poedit --help` and related diagnostics where gettext
-  catalogs are installed. They do not change mapping or *.po* file contents.
+  sélectionnent la langue de `poedit --help` et diagnostics associés. Ils ne modifient pas le contenu des mappages ni des *.po*.
 
 == See also
 
@@ -101,7 +82,7 @@ Further operands are _po-file_ paths to update directly.
 
 == Author
 
-Written by {project-author} <{project-email}>.
+Écrit par {project-author} <{project-email}>.
 
 == Copyright
 

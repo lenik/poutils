@@ -120,19 +120,13 @@ ninja -C /build
 
 ### Man pages
 
-English `poedit(1)` is built with Asciidoctor from
-`docs/poedit.adoc` (attributes `project-version`, `project-year`,
-`project-author`, `project-email`). Localized pages still come from
-`man/<lang>/poedit.1.in` via Meson `configure_file` with
-`@PROJECT_VERSION@`, `@PROJECT_YEAR@`, `@PROJECT_AUTHOR@`, and
-`@PROJECT_EMAIL@`, installed as `poedit(1)` under
-`$PREFIX/share/man/<lang>/man1/`
-(for each LINGUAS such as
-`ja`, `zh_CN`, …). To read one translation without
-changing `LANG`, set
-`MANPATH` to
-`$PREFIX/share/man/<lang>` and run
-`man poedit`.
+English `poedit(1)` is built with Asciidoctor from `docs/poedit.adoc`.
+Localized pages are whole-document translations under
+`docs/<lang>/poedit.adoc` (same Asciidoctor attributes:
+`project-version`, `project-year`, `project-author`, `project-email`),
+installed as `poedit(1)` under `$PREFIX/share/man/<lang>/man1/`.
+To read one translation without changing `LANG`, set `MANPATH` to
+`$PREFIX/share/man/<lang>` and run `man poedit`.
 
 ### Quick locale testing
 

@@ -1,0 +1,96 @@
+= poedit(1)
+Lenik <poutils@bodz.net>
+v{project-version}, {project-year}
+:doctype: manpage
+:manmanual: Ordono de uzanto
+:mansource: poutils
+:man-linkstyle: blue R <>
+:nofooter:
+
+== Name
+
+poedit - apliki gettekstajn tabelojn al *.po*
+
+== Synopsis
+
+*poedit* [opcioj] [po-dosiero]...
+
+== Description
+
+*poedit* legas tab-limitajn, UTF-8-ajn *msgid*/*msgstr*-mapojn kaj kontribuas
+*msgstr* en *.po*-katalogoj. Pregardu tradukojn antaŭe; unu fojo apliku. Nekreante
+*msgstr* nur el *msgid*.
+
+Celoj: implicitaj _po-dir_/_lingvo_.po, se dosiero ekzistas. Kun listo de
+_po-dosieroj_ — nur ilin. Lingvo: el vojo aŭ *-l* laŭ `poedit --help`.
+
+== Input format
+
+Ĉiu nemalplena linio estas dividata per tab-signoj (horizontala tabo, Unicode *U+0009* aŭ ASCII 0x09), ne per spacoj.
+C-escapoj eblas. Du aranĝoj:
+
+1. *Kun langs-kolumno:* _langs_ (komoj disigas lingvo-kodojn), *msgid* kaj po unu *msgstr*-kolumno por lingvo.
+2. *Sen langs-kolumno:* *msgid* kaj *msgstr*; lingvoj el *-l* */* *--langs* aŭ la vojo.
+
+Nombro de *msgstr* devas egali; vidu `poedit --help`.
+
+== Options
+
+*-i* _pad_, *--input*=_pad_::
+  Fonto; manke *stdin*.
+
+*-l* _langs_, *--langs*=_langs_::
+  Komoj-disigitaj lingvo-kodoj se mankas _langs_-kolumno; nombro de *msgstr* devas kongrui.
+
+*-p* _re_, *--po-dir*=_re_::
+  Bazo (defaŭlte: *po*).
+
+*-d*, *--dry-run*::
+  Nur montri planon, ne ŝanĝi dosierojn.
+
+*-v*, *--verbose*::
+  Pli da mesaĝoj.
+
+*-q*, *--quiet*::
+  Malpli da mesaĝoj.
+
+*-h*, *--help*::
+  Montri helpon kaj eliri sukcese.
+
+*--version*::
+  Montri version kaj eliri sukcese.
+
+Pluaj operandoj estas _po-vojoj_ por ĝisdatigi.
+
+== Exit status
+
+*0*::
+  Success.
+
+*1*::
+  Error.
+
+== Environment
+
+*LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
+  elektas la lingvon de `poedit --help` kaj rilataj diagnozoj. Ili ne ŝanĝas mapajn aŭ *.po*-enhavojn.
+
+== See also
+
+*xgettext*(1), *msgmerge*(1), *msgfmt*(1), *gettext*(1)
+
+== Author
+
+Skribita de {project-author} <{project-email}>.
+
+== Copyright
+
+Copyright (C) {project-year}.
+License AGPL-3.0-or-later.
+This is free software: you are free to change and redistribute it under the
+terms of the GNU Affero General Public License.
+There is NO WARRANTY, to the extent permitted by law.
+See the LICENSE file in the source distribution for the full license text,
+including supplemental terms stating this project opposes AI exploitation and
+AI hegemony, and rejects mindless MIT-style licensing and politically naive
+BSD-style licensing.

@@ -75,16 +75,10 @@ ninja -C /build
 
 ### 手册页
 
-英文 `poedit(1)` 由 Asciidoctor 从 `docs/poedit.adoc` 生成；各语言仍来自
-`man/<语言>/poedit.1.in`，由 Meson
-`configure_file` 用
-`@PROJECT_VERSION@`、
-`@PROJECT_YEAR@`、
-`@PROJECT_AUTHOR@`、
-`@PROJECT_EMAIL@` 在构建时替换；安装到
-`$PREFIX/share/man/<语言>/man1/poedit.1`。
-要单独看某一语言，把 `MANPATH` 指到
-`$PREFIX/share/man/<语言>` 后执行
+英文 `poedit(1)` 由 Asciidoctor 从 `docs/poedit.adoc` 生成；各语言为
+`docs/<语言>/poedit.adoc` 整篇翻译（同样注入 `project-version` 等属性），
+安装到 `$PREFIX/share/man/<语言>/man1/poedit.1`。
+要单独看某一语言，把 `MANPATH` 指到 `$PREFIX/share/man/<语言>` 后执行
 `man poedit`。
 
 ### 快速测试语言
