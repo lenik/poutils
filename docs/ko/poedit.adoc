@@ -1,0 +1,116 @@
+= poedit(1)
+Lenik <poutils@bodz.net>
+v{project-version}, {project-year}
+:doctype: manpage
+:manmanual: User Commands
+:mansource: poutils
+:man-linkstyle: blue R <>
+:nofooter:
+
+== Name
+
+poedit - batch apply gettext *msgid*/*msgstr* mappings into *.po* files
+
+== Synopsis
+
+*poedit* [_options_] [_po-file_]...
+
+== Description
+
+*poedit* reads UTF-8, tab-separated mapping data and merges translated strings
+(*msgstr*) for known *msgid* values into one or more GNU gettext *.po* files,
+grouped by language. Prepare translations first, then use *poedit* to update
+catalogs in a single run; it is not a substitute for human or other translation
+of the source strings themselves.
+
+By default, target files are _po-dir_/_lang_.po for each _lang_ in the input when
+that file is present. If _po-file_ arguments are given, only those files are
+written, and _lang_ is usually inferred from the path (for example, `.../ja.po`
+for Japanese). The built-in *--help* text explains a reasonable workflow,
+including for AI assistance.
+
+== Input format
+
+Each non-empty line is split on *tab* (horizontal tab, Unicode *U+0009* and
+ASCII 0x09), not on space characters. Within each field, C-style backslash
+escapes are allowed, as in C string literals, so that embedded newlines, tabs,
+and quotes can be written without breaking the TSV line layout.
+
+The following layouts are supported:
+
+1. *With langs column:* _langs_, then *msgid*, then one *msgstr* per language,
+   in that order, with *tab* characters between the fields. _langs_ is a
+   comma-separated list of Gettext language tags (e.g. *de*, *zh_CN,ja*) and
+   the number of *msgstr* fields must equal the number of language codes.
+
+2. *Without langs column:* *msgid* followed by one *msgstr* per language, when
+   a separate _langs_ column is not present. The target languages then come from
+   *-l* */* *--langs* (comma-separated), or, when that option names a single
+   language or is omitted, from the *-i* path and the _po-file_ target name,
+   depending on the invocation. That order matches the language-resolution rules
+   printed by `poedit --help`.
+
+== Options
+
+*-i* _path_, *--input*=_path_::
+  Read from a file or a directory. If this option is omitted, read the standard
+  input.
+
+*-l* _langs_, *--langs*=_langs_::
+  Comma-separated language codes for rows that do not start with a _langs_
+  column. The number of *msgstr* columns on each such row must match the number
+  of codes.
+
+*-p* _dir_, *--po-dir*=_dir_::
+  Base directory for default *po* paths (default: *po* in the current design).
+
+*-d*, *--dry-run*::
+  Show the update plan; do not modify files.
+
+*-v*, *--verbose*::
+  Increase verbosity.
+
+*-q*, *--quiet*::
+  Reduce log output.
+
+*-h*, *--help*::
+  Print a usage message and exit successfully.
+
+*--version*::
+  Print *poedit* version and exit successfully.
+
+Further operands are _po-file_ paths to update directly.
+
+== Exit status
+
+*0*::
+  Success.
+
+*1*::
+  Error.
+
+== Environment
+
+*LC_ALL*, *LC_MESSAGES*, *LANG*, *LANGUAGE*::
+  Select the language of `poedit --help` and related diagnostics where gettext
+  catalogs are installed. They do not change mapping or *.po* file contents.
+
+== See also
+
+*xgettext*(1), *msgmerge*(1), *msgfmt*(1), *gettext*(1)
+
+== Author
+
+Written by {project-author} <{project-email}>.
+
+== Copyright
+
+Copyright (C) {project-year}.
+License AGPL-3.0-or-later.
+This is free software: you are free to change and redistribute it under the
+terms of the GNU Affero General Public License.
+There is NO WARRANTY, to the extent permitted by law.
+See the LICENSE file in the source distribution for the full license text,
+including supplemental terms stating this project opposes AI exploitation and
+AI hegemony, and rejects mindless MIT-style licensing and politically naive
+BSD-style licensing.

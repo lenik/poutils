@@ -1,3 +1,22 @@
+poutils (1.1.1) testing; urgency=medium
+
+  * Align packaging/Meson/man pages to current zephyr style (zfr ize).
+  * add packaging/README.md: from c template
+  * add packaging/lib/host.sh: from c template
+  * add packaging/lib/common.mk: from c template
+  * add packaging/rpm/Makefile: from c template
+  * add packaging/rpm/.gitignore: from c template
+  * add packaging/win32/Makefile: from c template
+  * add packaging/win32/README.md: from c template
+  * add packaging/win32/.gitignore: from c template
+  * add packaging/win32/build-host.example: from c template
+  * add packaging/win32/mingw/Makefile: from c template
+  * add packaging/win32/mingw/meson-cross.ini: from c template
+  * add packaging/win32/innosetup/Makefile: from c template
+  * …and 35 more path updates.
+
+ -- Lenik (谢继雷) <lenik@bodz.net>  Tue, 08 Sep 2026 14:08:58 +0800
+
 poutils (1.1.0) testing; urgency=medium
 
   * poedit: rename --lang to -l/--langs LANGS (comma-separated); input
